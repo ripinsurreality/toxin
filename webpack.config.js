@@ -94,7 +94,7 @@ module.exports = {
 		})
 	],
 	resolve: {
-		extensions: [".js", ".json", ".png", ".jpg"], /* helps get rid of explicit extensions */
+		extensions: [".js", ".ts", ".json", ".png", ".jpg"], /* helps get rid of explicit extensions */
 		alias: {/* creates an alias for a folder address */
 			"@fonts": `${PATHS.src}/${PATHS.assets}/fonts`,
 			"@img": `${PATHS.src}/${PATHS.assets}/img`,
@@ -105,7 +105,7 @@ module.exports = {
 	devServer: {
 		contentBase: "./dist",
 		port: 4321,
-		open: true
+		// open: true
 	},
 	module: {
 		rules: [
