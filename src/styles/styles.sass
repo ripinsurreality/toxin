@@ -3,6 +3,9 @@
 @import "1-helpers/variables"
 @import "1-helpers/functions"
 
+// 3 - BASICS
+@import "3-basics/base"
+@import "3-basics/typography"
 
 .box
 	display: block
@@ -10,9 +13,10 @@
 	height: 4rem
 	border-radius: 5px
 
-$count: 1
-@each $color-name, $color-collection in $colors
-	@each $tone, $value in $color-collection
-		.c#{$count}
-			background: $value
-		$count: $count + 1
+/** Cycle through array of colors to make classes .c1-.c7 **/
+// $count: 1
+// @each $color-name, $color-collection in $colors
+// 	@each $tone, $value in $color-collection
+// 		.c#{$count}
+// 			background: $value
+// 		$count: $count + 1
