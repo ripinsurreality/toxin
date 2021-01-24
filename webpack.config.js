@@ -96,6 +96,7 @@ module.exports = {
 	resolve: {
 		extensions: [".js", ".ts", ".json", ".png", ".jpg"], /* helps get rid of explicit extensions */
 		alias: {/* creates an alias for a folder address */
+			"@modules": `${PATHS.src}/modules`,
 			"@fonts": `${PATHS.src}/${PATHS.assets}/fonts`,
 			"@img": `${PATHS.src}/${PATHS.assets}/img`,
 			"@": PATHS.src
@@ -148,7 +149,8 @@ module.exports = {
 				use: {
 					loader: "pug-loader",
 					options: {
-						pretty: true
+						pretty: true,
+						root: PATHS.src
 					}
 				}
 			},

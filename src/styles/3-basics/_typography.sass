@@ -12,7 +12,32 @@
 	font-weight: bold
 	font-style: normal
 
-body, 
+@font-face
+	font-family: 'Material Icons'
+	src: url('@fonts/Material Icons/MaterialIcons-Regular.eot')
+	src: local('☺'), url('@fonts/Material Icons/MaterialIcons-Regular.woff') format('woff'), url('@fonts/Material Icons/MaterialIcons-Regular.ttf') format('truetype'), url('@fonts/Material Icons/MaterialIcons-Regular.svg') format('svg')
+	font-weight: normal
+	font-style: normal
+
+.material-icons
+	font-family: 'Material Icons'
+	font-weight: normal
+	font-style: normal
+	/* Preferred icon size */
+	font-size: 24px
+	display: inline-block
+	line-height: 1
+	text-transform: none
+	letter-spacing: normal
+	word-wrap: normal
+	white-space: nowrap
+	direction: ltr
+	-webkit-font-smoothing: antialiased
+	text-rendering: optimizeLegibility
+	-moz-osx-font-smoothing: grayscale
+	font-feature-settings: 'liga'
+
+body,
 input,
 input::placeholder,
 label
@@ -21,8 +46,7 @@ label
 	font-size: 14px
 	color: $darkgray
 
-body, 
-input,
+body,
 label
 	line-height: 24px
 

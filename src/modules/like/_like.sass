@@ -1,0 +1,66 @@
+.like
+	display: flex
+	flex-direction: row
+	justify-content: flex-start
+	align-items: center
+	font-size: 10px
+	line-height: 8.5px
+	position: relative
+	padding-right: 10px
+	min-width: 40px
+	max-width: fit-content
+	cursor: pointer
+
+	&__input
+		appearance: none
+		outline: none
+		flex: none
+		font-size: inherit
+		line-height: inherit
+		width: 20px
+		height: 20px
+		display: flex
+		justify-content: center
+		align-items: center
+		cursor: inherit
+		&::after
+			content: "favorite_border"
+			font-family: 'Material Icons'
+			text-transform: none
+			letter-spacing: normal
+			word-wrap: normal
+			white-space: nowrap
+			direction: ltr
+			-webkit-font-smoothing: antialiased
+			text-rendering: optimizeLegibility
+			-moz-osx-font-smoothing: grayscale
+			font-feature-settings: 'liga'
+			background: linear-gradient(180deg, $lightgray 0%, $lightgray 100%)
+			-webkit-background-clip: text
+			-webkit-text-fill-color: transparent
+		&::before
+			content: ""
+			position: absolute
+			left: 0
+			right: 0
+			top: 0
+			bottom: 0
+			border: 1px solid $lightgray
+			border-radius: 10px
+
+		&:checked
+			&::after
+				content: "favorite"
+				background: $primary-gradient
+				-webkit-background-clip: text
+				-webkit-text-fill-color: transparent
+			&::before
+				border-color: $purple
+			& + .like__label
+				color: $purple
+
+	&__label
+		font-size: inherit
+		line-height: inherit
+		color: $lightgray
+		cursor: inherit

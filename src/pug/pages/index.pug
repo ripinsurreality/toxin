@@ -4,6 +4,12 @@ html(lang="en")
 		meta(charset="UTF-8")
 		meta(name="viewport" content="width=device-width, initial-scale=1.0")
 		title Toxin
+		include /modules/input-text/input-text.pug
+		include /modules/checkbox/checkbox.pug
+		include /modules/radio/radio.pug
+		include /modules/toggle/toggle.pug
+		include /modules/like/like.pug
+		include /modules/rate/rate.pug
 	body
 		| Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat, corporis.
 		ul
@@ -14,24 +20,17 @@ html(lang="en")
 		h1 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque, vel!
 		h2 Lorem ipsum dolor sit, amet consectetur adipisicing elit. Doloremque, deleniti.
 		h3 Lorem ipsum dolor sit, amet consectetur adipisicing elit. Doloribus, neque!
-		label.input-text
-			h3.input-text__label Text field
-			input(type="text" placeholder="Email").input-text__input
-		label.checkbox
-			input(type="checkbox").checkbox__input
-			span.checkbox__label Можно rehbnm
-		label.checkbox
-			input(type="checkbox").checkbox__input
-			span.checkbox__label Можно с питомцами
-		label.checkbox
-			input(type="checkbox").checkbox__input
-			span.checkbox__label Можно пригласить гостей (до 10 человек)
-		label.radio
-			input(type="radio", name="test").radio__input
-			span.radio__label Мужчина
-		label.radio
-			input(type="radio", name="test").radio__input
-			span.radio__label Женщина
-		label.toggle
-			input(type="checkbox").toggle__input
-			span.toggle__label Label
+		+input-text("Input text", "Email")
+		+checkbox("Можно с питомцами")(checked=true)
+		+checkbox("Можно с питомцами (до 10 человек)")
+		+checkbox("Можно rehbnm")
+		+radio("Женщина", "gender")
+		+radio("Мужчина", "gender")(checked)
+		+toggle("Toggle")
+		+like(2)
+		+like(24)
+		+like(24242424242)
+		+rate("eee")
+		.material-icons insert_emoticon
+		.material-icons star_border
+		.material-icons star
