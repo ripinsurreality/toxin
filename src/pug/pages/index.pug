@@ -14,6 +14,7 @@ html(lang="en")
 		include /modules/button-hollow/button-hollow.pug
 		include /modules/link/link.pug
 		include /modules/button-arrow/button-arrow.pug
+		include /modules/expandable-checkbox-list/expandable-checkbox-list.pug
 	body
 		| Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat, corporis.
 		ul
@@ -25,11 +26,11 @@ html(lang="en")
 		h2 Lorem ipsum dolor sit, amet consectetur adipisicing elit. Doloremque, deleniti.
 		h3 Lorem ipsum dolor sit, amet consectetur adipisicing elit. Doloribus, neque!
 		+input-text("Input text", "Email")
-		+checkbox("Можно с питомцами")(checked=true)
+		+checkbox("Можно с питомцами")
 		+checkbox("Можно с питомцами (до 10 человек)")
 		+checkbox("Можно rehbnm")
 		+radio("Женщина", "gender")
-		+radio("Мужчина", "gender")(checked)
+		+radio("Мужчина", "gender", true)
 		+toggle("Toggle")
 		+like(2)
 		+like(24)
@@ -39,3 +40,5 @@ html(lang="en")
 		+button-hollow("Sample text")
 		+link("Sample text", "#")
 		+button-arrow("Sample text")
+		- var items = [["Завтрак", true], ["Обед"], ["Ужин", false]]
+		+expandable-checkbox-list("Expandable checkbox list", items)
