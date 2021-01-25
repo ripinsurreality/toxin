@@ -6,6 +6,5 @@ mixin expandable-checkbox-list(title, items)
 		ul.checkbox-list__list
 			if items
 				each item in items
-					- var attr = item[1]
 					li.checkbox-list__list-item
 						+checkbox(item[0], item[1])

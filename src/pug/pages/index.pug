@@ -15,6 +15,9 @@ html(lang="en")
 		include /modules/link/link.pug
 		include /modules/button-arrow/button-arrow.pug
 		include /modules/expandable-checkbox-list/expandable-checkbox-list.pug
+		include /modules/rich-checkbox/rich-checkbox.pug
+		include /modules/bullet-list/bullet-list.pug
+		include /modules/icon-text-list/icon-text-list.pug
 	body
 		| Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat, corporis.
 		ul
@@ -42,3 +45,6 @@ html(lang="en")
 		+button-arrow("Sample text")
 		- var items = [["Завтрак", true], ["Обед"], ["Ужин", false]]
 		+expandable-checkbox-list("Expandable checkbox list", items)
+		+rich-checkbox("Широкий коридор", "Ширина коридоров в номере не менее 91 см.", true)
+		+bullet-list("Нельзя с питомцами", "Без вечеринок и мероприятий", "Время прибытия - после 13:00, а выезд до 12:00")
+		+icon-text-list(["insert_emoticon", "Комфорт", "Шумопоглощающие стены"], ["location_city", "Удобство", "Окно в каждой из спален"])

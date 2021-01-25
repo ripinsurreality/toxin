@@ -1,0 +1,6 @@
+mixin rich-checkbox(title, text, check=false)
+	label.rich-checkbox
+		input(type="checkbox" checked=check).rich-checkbox__input
+		.rich-checkbox__description
+			.rich-checkbox__title= title
+			.rich-checkbox__text= text
