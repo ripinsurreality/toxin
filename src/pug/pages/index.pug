@@ -10,6 +10,10 @@ html(lang="en")
 		include /modules/toggle/toggle.pug
 		include /modules/like/like.pug
 		include /modules/rate/rate.pug
+		include /modules/button-full/button-full.pug
+		include /modules/button-hollow/button-hollow.pug
+		include /modules/link/link.pug
+		include /modules/button-arrow/button-arrow.pug
 	body
 		| Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat, corporis.
 		ul
@@ -31,6 +35,7 @@ html(lang="en")
 		+like(24)
 		+like(24242424242)
 		+rate("eee")
-		.material-icons insert_emoticon
-		.material-icons star_border
-		.material-icons star
+		+button-full("Sample text")
+		+button-hollow("Sample text")
+		+link("Sample text", "#")
+		+button-arrow("Sample text")
