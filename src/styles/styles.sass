@@ -3,6 +3,9 @@
 @import "1-helpers/variables"
 @import "1-helpers/functions"
 
+// 2 - TOOLS
+@import "2-tools/normalize"
+
 // 3 - BASICS
 @import "3-basics/base"
 @import "3-basics/typography"
@@ -22,7 +25,13 @@
 @import "@modules/bullet-list/bullet-list"
 @import "@modules/icon-text-list/icon-text-list"
 @import "@modules/comment/comment"
+@import "@modules/dropdown/dropdown"
 
+
+body
+	display: grid
+	place-items: center
+	padding-bottom: 200px
 .box
 	display: block
 	width: 4rem

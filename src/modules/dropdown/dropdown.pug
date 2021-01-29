@@ -1,0 +1,48 @@
+mixin dropdown()
+	//- .dropdown.dropdown--open
+	//- 	.dropdown__input 2 спальни, 2 кровати...
+	//- 	.dropdown__bottom
+	//- 		ul.dropdown__options
+	//- 			li.dropdown-item
+	//- 				h3.dropdown-item__title Спальни
+	//- 				.dropdown-item__control
+	//- 					button.dropdown-item__button -
+	//- 					h3.dropdown-item__value 2
+	//- 					button.dropdown-item__button +
+	//- 			li.dropdown-item
+	//- 				h3.dropdown-item__title Кровати
+	//- 				.dropdown-item__control
+	//- 					button.dropdown-item__button -
+	//- 					h3.dropdown-item__value 2
+	//- 					button.dropdown-item__button +
+	//- 			li.dropdown-item
+	//- 				h3.dropdown-item__title Ванные комнаты
+	//- 				.dropdown-item__control
+	//- 					button.dropdown-item__button -
+	//- 					h3.dropdown-item__value 0
+	//- 					button.dropdown-item__button +
+	.dropdown.dropdown--open.dropdown--wide
+		.dropdown__input 3 гостя
+		.dropdown__bottom
+			ul.dropdown__options
+				li.dropdown-item
+					h3.dropdown-item__title Взрослые
+					.dropdown-item__control
+						button.dropdown-item__button -
+						h3.dropdown-item__value 2
+						button.dropdown-item__button +
+				li.dropdown-item
+					h3.dropdown-item__title Дети
+					.dropdown-item__control
+						button.dropdown-item__button -
+						h3.dropdown-item__value 1
+						button.dropdown-item__button +
+				li.dropdown-item
+					h3.dropdown-item__title Младенцы
+					.dropdown-item__control
+						button.dropdown-item__button -
+						h3.dropdown-item__value 0
+						button.dropdown-item__button +
+			.dropdown__control
+				h3.dropdown__clear Очистить
+				h3.dropdown__accept Применить

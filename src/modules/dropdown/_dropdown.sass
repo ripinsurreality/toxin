@@ -1,0 +1,113 @@
+.dropdown
+	position: relative
+	width: 266px
+	background: white
+
+	&--open
+		filter: drop-shadow(0px 10px 5px rgba($dark, 0.05))
+		& .dropdown__input
+			border-color: $gray
+
+	&--wide
+		width: 320px
+
+	&__input
+		height: 44px
+		width: 100%
+		border: 1px solid $lightgray
+		border-top-left-radius: 2px
+		border-top-right-radius: 2px
+		display: flex
+		flex-direction: row
+		justify-content: space-between
+		align-items: center
+		padding-left: 14px
+		cursor: pointer
+
+		&::after
+			content: "expand_more"
+			font-family: 'Material Icons'
+			text-transform: none
+			letter-spacing: normal
+			word-wrap: normal
+			white-space: nowrap
+			direction: ltr
+			-webkit-font-smoothing: antialiased
+			text-rendering: optimizeLegibility
+			-moz-osx-font-smoothing: grayscale
+			font-feature-settings: 'liga'
+
+			font-size: 24px
+			line-height: 24px
+			height: 44px
+			width: 44px
+			display: flex
+			justify-content: center
+			align-items: center
+
+	&__bottom
+		position: absolute
+		left: 0
+		right: 0
+		top: 100%
+		border: 1px solid $gray
+		border-bottom-left-radius: 2px
+		border-bottom-right-radius: 2px
+		padding: 6px
+		display: flex
+		flex-direction: column
+		gap: 20px
+		background: white
+
+	&__options
+		display: flex
+		flex-direction: column
+		gap: 7px
+
+	&__control
+		display: flex
+		justify-content: space-between
+		align-items: center
+		padding: 0 0 6px 7px
+
+	&__clear,
+	&__accept
+		color: $purple
+		cursor: pointer
+
+	&-item
+		width: 100%
+		display: flex
+		flex-direction: row
+		justify-content: space-between
+		align-items: center
+
+		&__title
+			padding-left: 8px
+
+		&__value
+			width: 32px
+			display: flex
+			justify-content: center
+			align-items: center
+
+		&__control
+			display: flex
+			flex-direction: row
+			justify-content: space-between
+			align-items: center
+
+		&__button
+			flex: none
+			width: 30px
+			height: 30px
+			border: 1px solid $lightgray
+			border-radius: 22px
+			font-size: 18px
+			line-height: 21.94px
+			color: $gray
+			background: white
+			cursor: pointer
+			display: flex
+			justify-content: center
+			align-items: center
