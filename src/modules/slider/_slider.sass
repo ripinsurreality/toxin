@@ -1,0 +1,37 @@
+.slider
+	width: 300px
+	height: 37px
+	display: flex
+	justify-content: center
+	align-items: center
+	cursor: pointer
+
+	&__rail
+		width: 266px
+		height: 6px
+		background: #fff
+		border: 1px solid $gray
+		border-radius: 3px
+		position: relative
+
+		&-inner
+			position: absolute
+			top: 0
+			bottom: 0
+			left: 0
+			right: 14px
+
+	&__track
+		background: $green
+		position: absolute
+
+	&__thumb
+		position: absolute
+		left: 0
+		top: -5px
+		// transform: translateY(-25%)
+		width: 14px
+		height: 14px
+		border: 2px solid #fff
+		border-radius: 10px
+		background: $green

@@ -56,7 +56,7 @@
 		padding: 6px
 		display: flex
 		flex-direction: column
-		gap: 20px
+		gap: 10px
 		background: white
 
 	&__options
@@ -68,12 +68,14 @@
 		display: flex
 		justify-content: space-between
 		align-items: center
-		padding: 0 0 6px 7px
+		// padding: 0 0 6px 7px
 
 	&__clear,
 	&__accept
 		color: $purple
 		cursor: pointer
+		padding: 10px 0 6px 7px
+		user-select: none
 
 	&-item
 		width: 100%
@@ -111,3 +113,4 @@
 			display: flex
 			justify-content: center
 			align-items: center
+			outline: none
