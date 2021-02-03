@@ -12,7 +12,7 @@ import "@modules/slider/slider"
 		console.log($(".slider-wrapper").slider({
 			min: 100,
 			max: 201,
-			step: 1
+			step: 10
 		}))
 	});
 
