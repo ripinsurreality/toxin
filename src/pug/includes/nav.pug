@@ -1,0 +1,24 @@
+
+include /modules/button-full/button-full
+include /modules/button-hollow/button-hollow
+
+nav.nav
+	a(href="/").nav__logo
+		.nav__logo-img
+			include /pug/includes/logo
+		.nav__logo-text
+			include /pug/includes/logo-text
+	ul.nav__links
+		li.nav__link
+			a.link(href="#") О нас
+		li.nav__link
+			a.link(href="#") Услуги
+		li.nav__link
+			a.link(href="#") Вакансии
+		li.nav__link
+			a.link(href="#") Новости
+		li.nav__link
+			a.link(href="#") Соглашения
+		li.nav__auth
+			+button-hollow("Войти")
+			+button-full("Зарегистрироваться")
