@@ -21,8 +21,10 @@ html(lang="en")
 		include /modules/comment/comment.pug
 		include /modules/dropdown/dropdown.pug
 		include /modules/slider/slider.pug
-	body
 		include /pug/includes/nav
+	body
+		+nav(true, "Сбор Подоев")
+		+nav
 		| Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat, corporis.
 		ul
 			li Lorem ipsum dolor sit amet.
