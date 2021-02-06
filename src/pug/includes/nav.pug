@@ -1,13 +1,11 @@
 include /modules/button-full/button-full
 include /modules/button-hollow/button-hollow
+include /pug/includes/logo
 
 mixin nav(authed, user)
 	nav.nav
 		a(href="/").nav__logo
-			.nav__logo-img
-				include /pug/includes/logo
-			.nav__logo-text
-				include /pug/includes/logo-text
+			+logo
 		ul.nav__links
 			li.nav__link
 				a.link(href="#") О нас
