@@ -3,12 +3,14 @@
 	flex-direction: row
 	justify-content: flex-start
 	align-items: center
-	font-size: 10px
-	line-height: 8.5px
-	position: relative
-	padding-right: 10px
 	min-width: 40px
 	max-width: fit-content
+	position: relative
+	padding-right: 10px
+
+	font-size: 10px
+	line-height: 8.5px
+
 	cursor: pointer
 	user-select: none
 
@@ -16,29 +18,21 @@
 		appearance: none
 		outline: none
 		flex: none
-		font-size: inherit
-		line-height: inherit
-		width: 20px
-		height: 20px
+
 		display: flex
 		justify-content: center
 		align-items: center
+		width: 20px
+		height: 20px
+
+		font-size: inherit
+		line-height: inherit
+
 		cursor: inherit
 		&::after
+			@extend %material-icons
 			content: "favorite_border"
-			font-family: 'Material Icons'
-			text-transform: none
-			letter-spacing: normal
-			word-wrap: normal
-			white-space: nowrap
-			direction: ltr
-			-webkit-font-smoothing: antialiased
-			text-rendering: optimizeLegibility
-			-moz-osx-font-smoothing: grayscale
-			font-feature-settings: 'liga'
-			background: linear-gradient(180deg, $lightgray 0%, $lightgray 100%)
-			-webkit-background-clip: text
-			-webkit-text-fill-color: transparent
+			@include text-clip(linear-gradient(180deg, $lightgray 0%, $lightgray 100%))
 		&::before
 			content: ""
 			position: absolute
@@ -46,6 +40,7 @@
 			right: 0
 			top: 0
 			bottom: 0
+			
 			border: 1px solid $lightgray
 			border-radius: 10px
 			background: white
@@ -54,9 +49,7 @@
 		&:checked
 			&::after
 				content: "favorite"
-				background: $primary-gradient
-				-webkit-background-clip: text
-				-webkit-text-fill-color: transparent
+				@include text-clip($primary-gradient)
 			&::before
 				border-color: $purple
 			& + .like__label

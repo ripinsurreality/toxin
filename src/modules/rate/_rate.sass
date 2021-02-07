@@ -17,22 +17,10 @@
 		cursor: pointer
 
 		&::after
+			@extend %material-icons
 			content: "star"
-			font-family: 'Material Icons'
-			text-transform: none
-			letter-spacing: normal
-			word-wrap: normal
-			white-space: nowrap
-			direction: ltr
-			-webkit-font-smoothing: antialiased
-			text-rendering: optimizeLegibility
-			-moz-osx-font-smoothing: grayscale
-			font-feature-settings: 'liga'
+			@include text-clip($primary-gradient)
 
-			background: $primary-gradient
-			-webkit-background-clip: text
-			-webkit-text-fill-color: transparent
-		
 		&:checked
 			&::after
 				content: "star"
