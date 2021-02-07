@@ -1,5 +1,4 @@
-include /modules/buttons/button-full
-include /modules/buttons/button-hollow
+include /modules/button/button
 include /pug/includes/logo
 
 mixin nav(authed, user)
@@ -22,6 +21,6 @@ mixin nav(authed, user)
 					a.nav__link(href="#")= user
 			else
 				li.nav__item
-					+button-hollow("Войти")
+					+button("hollow", "Войти")
 				li.nav__item
-					+button-full("Зарегистрироваться")
+					+button("full", "Зарегистрироваться")

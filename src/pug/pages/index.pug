@@ -11,9 +11,7 @@ html(lang="en")
 		include /modules/toggle/toggle
 		include /modules/like/like
 		include /modules/rate/rate
-		include /modules/buttons/button-full
-		include /modules/buttons/button-hollow
-		include /modules/buttons/button-arrow
+		include /modules/button/button
 		include /modules/link/link
 		include /modules/expandable-checkbox-list/expandable-checkbox-list
 		include /modules/rich-checkbox/rich-checkbox
@@ -49,10 +47,10 @@ html(lang="en")
 		+like(24)
 		+like(24242424242)
 		+rate("eee")
-		+button-full("Sample text")
-		+button-hollow("Sample text")
+		+button("hollow", "Sample text")
+		+button("full", "Sample text")
+		+button("arrow", "Sample text")
 		+link("Sample text", "#")
-		+button-arrow("Sample text")
 		- var items = [["Завтрак", true], ["Обед"], ["Ужин", false]]
 		+expandable-checkbox-list("Expandable checkbox list", items)
 		+rich-checkbox("Широкий коридор", "Ширина коридоров в номере не менее 91 см.", true)
