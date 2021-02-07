@@ -1,27 +1,27 @@
-include /modules/button-full/button-full
-include /modules/button-hollow/button-hollow
+include /modules/buttons/button-full
+include /modules/buttons/button-hollow
 include /pug/includes/logo
 
 mixin nav(authed, user)
 	nav.nav
 		a(href="/").nav__logo
 			+logo
-		ul.nav__links
-			li.nav__link
-				a.link(href="#") О нас
-			li.nav__link
-				a.link(href="#") Услуги
-			li.nav__link
-				a.link(href="#") Вакансии
-			li.nav__link
-				a.link(href="#") Новости
-			li.nav__link
-				a.link(href="#") Соглашения
+		ul.nav__items
+			li.nav__item
+				a.nav__link(href="#") О нас
+			li.nav__item
+				a.nav__link(href="#") Услуги
+			li.nav__item
+				a.nav__link(href="#") Вакансии
+			li.nav__item
+				a.nav__link(href="#") Новости
+			li.nav__item
+				a.nav__link(href="#") Соглашения
 			if authed
 				li.nav__user
-					a.link(href="#")= user
+					a.nav__link(href="#")= user
 			else
-				li.nav__link
+				li.nav__item
 					+button-hollow("Войти")
-				li.nav__link
+				li.nav__item
 					+button-full("Зарегистрироваться")

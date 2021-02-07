@@ -17,10 +17,10 @@
 @import "@modules/toggle/toggle"
 @import "@modules/like/like"
 @import "@modules/rate/rate"
-@import "@modules/button-full/button-full"
-@import "@modules/button-hollow/button-hollow"
+@import "@modules/buttons/button-full"
+@import "@modules/buttons/button-hollow"
+@import "@modules/buttons/button-arrow"
 @import "@modules/link/link"
-@import "@modules/button-arrow/button-arrow"
 @import "@modules/expandable-checkbox-list/expandable-checkbox-list"
 @import "@modules/rich-checkbox/rich-checkbox"
 @import "@modules/bullet-list/bullet-list"
@@ -36,16 +36,3 @@ body
 	display: grid
 	place-items: center
 	padding-bottom: 200px
-.box
-	display: block
-	width: 4rem
-	height: 4rem
-	border-radius: 5px
-
-/** Cycle through array of colors to make classes .c1-.c7 **/
-// $count: 1
-// @each $color-name, $color-collection in $colors
-// 	@each $tone, $value in $color-collection
-// 		.c#{$count}
-// 			background: $value
-// 		$count: $count + 1
