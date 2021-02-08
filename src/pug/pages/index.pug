@@ -36,7 +36,9 @@ html(lang="en")
 		h1 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque, vel!
 		h2 Lorem ipsum dolor sit, amet consectetur adipisicing elit. Doloremque, deleniti.
 		h3 Lorem ipsum dolor sit, amet consectetur adipisicing elit. Doloribus, neque!
-		+input-text("Input text", "Email")
+		div(style="width: 320px")
+			+input-text("Input text", "Email")
+			+input-text("Input masked", "ДД.ММ.ГГГГ")(data-inputmask="'mask': '99.99.9999'")
 		+checkbox("Можно с питомцами")
 		+checkbox("Можно с питомцами (до 10 человек)")
 		+checkbox("Можно rehbnm")
@@ -60,5 +62,6 @@ html(lang="en")
 		+bullet-list("Нельзя с питомцами", "Без вечеринок и мероприятий", "Время прибытия - после 13:00, а выезд до 12:00")
 		+icon-text-list(["insert_emoticon", "Комфорт", "Шумопоглощающие стены"], ["location_city", "Удобство", "Окно в каждой из спален"])
 		+comment("", "Бидон Помоев", "5 дней назад", "12", "Великолепный матрас на кровати в основной спальне! А пуфик вообще потрясающий. И стены, действительно, шумоподавляющие. Выкрикивал комплименты повару — никто не жаловался из соседей.")
-		+dropdown()
+		div(style="width: 320px;")
+			+dropdown()
 		//- +slider()

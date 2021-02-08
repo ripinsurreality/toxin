@@ -1,22 +1,26 @@
 import "@/styles/styles.sass"
 import "@modules/slider/slider"
+import "inputmask/dist/jquery.inputmask.min"
+import "inputmask/dist/bindings/inputmask.binding"
 
 // IIFE - Immediately Invoked Function Expression
-(function ($, window, document) {
+;(function ($, window, document) {
 	// console.log($)
 	// console.log(jQuery)
-	// The $ is now locally scoped 
+	// The $ is now locally scoped
 
 	// Listen for the jQuery ready event on the document
 	$(function () {
-		console.log($(".slider-wrapper").slider({
-			min: 100,
-			max: 201,
-			step: 10
-		}))
-	});
+		$(":input").inputmask()
+		console.log(
+			$(".slider-wrapper").slider({
+				min: 100,
+				max: 201,
+				step: 10,
+			})
+		)
+	})
 
 	// The rest of the code goes here!
-
-}(jQuery, window, document));
- // The global jQuery object is passed as a parameter
+})(jQuery, window, document)
+// The global jQuery object is passed as a parameter
