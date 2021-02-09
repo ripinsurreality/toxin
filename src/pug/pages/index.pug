@@ -5,6 +5,7 @@ html(lang="en")
 		meta(name="viewport" content="width=device-width, initial-scale=1.0")
 		title Toxin
 		include /modules/inputs/input-text
+		include /modules/inputs/input-submit
 		include /modules/inputs/dropdown
 		include /modules/checkbox/checkbox
 		include /modules/radio/radio
@@ -39,6 +40,8 @@ html(lang="en")
 		div(style="width: 320px")
 			+input-text("Input text", "Email")
 			+input-text("Input masked", "ДД.ММ.ГГГГ")(data-inputmask="'mask': '99.99.9999'")
+		div(style="width: 267px;")
+			+input-submit("Subscription text field", "Email")
 		+checkbox("Можно с питомцами")
 		+checkbox("Можно с питомцами (до 10 человек)")
 		+checkbox("Можно rehbnm")
