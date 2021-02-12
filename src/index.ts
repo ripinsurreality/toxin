@@ -1,5 +1,6 @@
 import "@/styles/styles.sass"
 import "@modules/slider/slider"
+import "@modules/inputs/dropdown"
 import "inputmask/dist/jquery.inputmask.min"
 import "inputmask/dist/bindings/inputmask.binding"
 
@@ -12,13 +13,15 @@ import "inputmask/dist/bindings/inputmask.binding"
 	// Listen for the jQuery ready event on the document
 	$(function () {
 		$(":input").inputmask()
-		console.log(
-			$(".slider-wrapper").slider({
-				min: 100,
-				max: 201,
-				step: 10,
-			})
-		)
+		// console.log(
+		// 	$(".slider-wrapper").slider({
+		// 		min: 100,
+		// 		max: 201,
+		// 		step: 10,
+		// 	})
+		// )
+
+		$(".drop-me").dropdown()
 	})
 
 	// The rest of the code goes here!
