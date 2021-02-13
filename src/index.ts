@@ -4,6 +4,19 @@ import "@modules/inputs/dropdown"
 import "inputmask/dist/jquery.inputmask.min"
 import "inputmask/dist/bindings/inputmask.binding"
 
+const newItems: ItemType[] = [
+	"Сколько комнат",
+	["Спальня", "Спальни", "Спален"],
+	{
+		title: ["Кровать", "Кровати", "Кроватей"],
+		value: 1,
+	},
+	{
+		title: ["Ванная комната", "Ванные комнаты", "Ванных комнат"],
+		value: 2,
+	},
+]
+
 // IIFE - Immediately Invoked Function Expression
 ;(function ($, window, document) {
 	// console.log($)
@@ -21,7 +34,7 @@ import "inputmask/dist/bindings/inputmask.binding"
 		// 	})
 		// )
 
-		$(".drop-me").dropdown()
+		$(".drop-me").dropdown(...newItems)
 	})
 
 	// The rest of the code goes here!
