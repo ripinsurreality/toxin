@@ -43,14 +43,15 @@ export class DropdownView {
 				}
 			},
 			focusout: (e) => {
-				// this.dropdown.removeClass("dropdown--open")
+				if (
+					(e.relatedTarget instanceof HTMLElement &&
+						!this.dropdown.get(0).contains(e.relatedTarget)) ||
+					!e.relatedTarget
+				) {
+					this.dropdown.removeClass("dropdown--open")
+				}
 			},
 			change: (e) => {},
-		})
-		$(document).on({
-			click: (e) => {
-				// console.log(this.dropdown.has(e.target).length > 0)
-			},
 		})
 
 		/* APPENDS */
