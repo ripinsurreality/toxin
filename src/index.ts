@@ -1,11 +1,11 @@
 import "@/styles/styles.sass"
 import "@modules/slider/slider"
-import "@modules/inputs/dropdown"
+import "@modules/dropdown/dropdown"
 import "inputmask/dist/jquery.inputmask.min"
 import "inputmask/dist/bindings/inputmask.binding"
 
 const newItems: ItemType[] = [
-	"Сколько комнат",
+	"Какие удобства",
 	["Спальня", "Спальни", "Спален"],
 	{
 		title: ["Кровать", "Кровати", "Кроватей"],
