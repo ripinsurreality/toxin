@@ -39,7 +39,7 @@ export class DropdownView {
 					e.target.contains(this.label.get(0)) ||
 					e.target.contains(this.arrow.get(0))
 				) {
-					this.dropdown.toggleClass("dropdown--open")
+					this.switchDropdown()
 				}
 			},
 			focusout: (e) => {
@@ -48,10 +48,20 @@ export class DropdownView {
 						!this.dropdown.get(0).contains(e.relatedTarget)) ||
 					!e.relatedTarget
 				) {
-					this.dropdown.removeClass("dropdown--open")
+					this.switchDropdown("close")
 				}
 			},
-			change: (e) => {},
+			keydown: (e) => {
+				if (
+					e.code === "Space" &&
+					e.target instanceof HTMLElement &&
+					e.target === this.dropdown.get(0)
+				) {
+					e.preventDefault()
+					console.log()
+					this.switchDropdown()
+				}
+			},
 		})
 
 		/* APPENDS */
@@ -59,6 +69,26 @@ export class DropdownView {
 			this.input.append(this.label, this.arrow),
 			this.bottom.render()
 		)
+	}
+
+	switchDropdown(state?: "open" | "close" | "toggle") {
+		switch (state) {
+			case "open": {
+				!this.dropdown.hasClass("dropdown--open") &&
+					this.dropdown.addClass("dropdown--open")
+				break
+			}
+			case "close": {
+				this.dropdown.hasClass("dropdown--open") &&
+					this.dropdown.removeClass("dropdown--open")
+				break
+			}
+			case "toggle":
+			default: {
+				this.dropdown.toggleClass("dropdown--open")
+				break
+			}
+		}
 	}
 
 	render() {
@@ -120,6 +150,11 @@ class DropdownItem {
 				const direction = -Math.sign(oE.deltaY) > 0 ? "+" : "-"
 				this.dispatchValue(item, direction, onItemChange)
 			},
+			keydown: (e) => {
+				if (e.key === "+" || e.key === "-") {
+					this.dispatchValue(item, e.key, onItemChange)
+				}
+			}
 		})
 
 		this.btnMinus.on({
