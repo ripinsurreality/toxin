@@ -5,7 +5,7 @@
 	@extend %input-wrapper
 
 	&--open
-		filter: drop-shadow(0px 10px 5px rgba($dark, 0.05))
+		// filter: drop-shadow(0px 10px 5px rgba($dark, 0.05))
 		& .dropdown__input
 			border-color: $gray
 			border-bottom-left-radius: 0px
@@ -42,6 +42,7 @@
 			align-items: center
 
 	&__bottom
+		z-index: 1
 		position: absolute
 		left: 0
 		right: 0

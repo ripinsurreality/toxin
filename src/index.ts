@@ -34,7 +34,9 @@ const newItems: ItemType[] = [
 		// 	})
 		// )
 
-		$(".drop-me").dropdown(...newItems)
+		$(".dropdown-3").dropdown(...newItems)
+		$(".dropdown-2").dropdown(...newItems)
+		$(".dropdown-1").dropdown(...newItems)
 	})
 
 	// The rest of the code goes here!

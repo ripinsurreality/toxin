@@ -48,7 +48,7 @@ export class DropdownView {
 						!this.dropdown.get(0).contains(e.relatedTarget)) ||
 					!e.relatedTarget
 				) {
-					this.switchDropdown("close")
+					this.switchDropdown(false)
 				}
 			},
 			keydown: (e) => {
@@ -71,24 +71,24 @@ export class DropdownView {
 		)
 	}
 
-	switchDropdown(state?: "open" | "close" | "toggle") {
-		switch (state) {
-			case "open": {
+	switchDropdown(on?: boolean) {
+		switch (on) {
+			case true: {
 				!this.dropdown.hasClass("dropdown--open") &&
 					this.dropdown.addClass("dropdown--open")
 				break
 			}
-			case "close": {
+			case false: {
 				this.dropdown.hasClass("dropdown--open") &&
 					this.dropdown.removeClass("dropdown--open")
 				break
 			}
-			case "toggle":
 			default: {
 				this.dropdown.toggleClass("dropdown--open")
 				break
 			}
 		}
+		this.bottom.switchItemsTabIndex(on)
 	}
 
 	render() {
@@ -104,7 +104,9 @@ class DropdownBottom {
 	constructor(items: Item[], onItemChange: () => void) {
 		/* INITS */
 		this.bottom = $("<div class='dropdown__bottom'></div>")
-		this.items = items.map((item) => new DropdownItem(item, onItemChange))
+		this.items = items.map(
+			(item) => new DropdownItem(item, onItemChange)
+		)
 		this.ul = $("<ul class='dropdown__options'></ul>")
 
 		/* APPENDS */
@@ -114,8 +116,10 @@ class DropdownBottom {
 		this.bottom.append(this.ul)
 	}
 
-	get options() {
-		return this.items
+	switchItemsTabIndex(on?: boolean) {
+		this.items.forEach(item => {
+			item.switchTabIndex(on)
+		})
 	}
 
 	render() {
@@ -130,10 +134,11 @@ class DropdownItem {
 	value: JQuery
 	btnMinus: JQuery
 	btnPlus: JQuery
+	onItemChange: () => void
 
 	constructor(item: Item, onItemChange: () => void) {
 		/* INITS */
-		this.body = $("<li class='dropdown-item'></li>").attr("tabindex", 0)
+		this.body = $("<li class='dropdown-item'></li>")
 		this.title = $("<h3 class='dropdown-item__title'></h3>").text(
 			item.getTitle(true)
 		)
@@ -142,24 +147,26 @@ class DropdownItem {
 		this.value = $("<h3 class='dropdown-item__value'></h3>").text(item.value)
 		this.btnPlus = $("<div class='dropdown-item__button'></div>").text("+")
 
+		this.onItemChange = onItemChange
+
 		/* EVENTS */
 		this.body.on({
 			wheel: (e) => {
 				e.preventDefault()
 				const oE = e.originalEvent as WheelEvent
 				const direction = -Math.sign(oE.deltaY) > 0 ? "+" : "-"
-				this.dispatchValue(item, direction, onItemChange)
+				this.dispatchValue(item, direction)
 			},
 			keydown: (e) => {
 				if (e.key === "+" || e.key === "-") {
-					this.dispatchValue(item, e.key, onItemChange)
+					this.dispatchValue(item, e.key)
 				}
-			}
+			},
 		})
 
 		this.btnMinus.on({
 			click: () => {
-				this.dispatchValue(item, "-", onItemChange)
+				this.dispatchValue(item, "-")
 			},
 			focus: (e) => {
 				e.preventDefault()
@@ -168,7 +175,7 @@ class DropdownItem {
 
 		this.btnPlus.on({
 			click: () => {
-				this.dispatchValue(item, "+", onItemChange)
+				this.dispatchValue(item, "+")
 			},
 			focus: (e) => {
 				e.preventDefault()
@@ -182,11 +189,31 @@ class DropdownItem {
 		)
 	}
 
-	dispatchValue(item: Item, type: "+" | "-", onItemChange: () => void) {
+	dispatchValue(item: Item, type: "+" | "-") {
 		const result = item.dispatchValue(type)
 		if (result || result === 0) {
 			this.value.text(result)
-			onItemChange()
+			this.onItemChange()
+		}
+	}
+
+	switchTabIndex(on?: boolean) {
+		switch (on) {
+			case true: {
+				this.body.attr("tabindex", 0)
+				break
+			}
+			case false: {
+				this.body.removeAttr("tabindex")
+				break
+			}
+
+			default: {
+				this.body[0].hasAttribute("tabindex")
+					? this.body.removeAttr("tabindex")
+					: this.body.attr("tabindex", 0)
+				break
+			}
 		}
 	}
 
