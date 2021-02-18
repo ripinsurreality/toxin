@@ -44,7 +44,7 @@ export class Item {
 		}
 	}
 
-	dispatchValue(type: "+" | "-") {
+	dispatchValue(type?: "+" | "-") {
 		switch (type) {
 			case "+": {
 				this.value++
@@ -58,8 +58,10 @@ export class Item {
 				return
 			}
 
-			default:
+			default: {
+				this.value = 0
 				return this.value
+			}
 		}
 	}
 
