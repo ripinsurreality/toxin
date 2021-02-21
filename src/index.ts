@@ -1,6 +1,7 @@
 import "@/styles/styles.sass"
 import "@modules/slider/slider"
 import "@modules/dropdown/dropdown"
+import "@modules/datepicker/datepicker"
 import "inputmask/dist/jquery.inputmask.min"
 import "inputmask/dist/bindings/inputmask.binding"
 
@@ -26,17 +27,19 @@ const newItems: ItemType[] = [
 	// Listen for the jQuery ready event on the document
 	$(function () {
 		$(":input").inputmask()
-		// console.log(
-		// 	$(".slider-wrapper").slider({
-		// 		min: 100,
-		// 		max: 201,
-		// 		step: 10,
-		// 	})
-		// )
+		console.log(
+			$(".slider-wrapper").slider({
+				min: 100,
+				max: 201,
+				step: 10,
+			})
+		)
 
 		$(".dropdown-3").dropdown(...newItems)
 		$(".dropdown-2").dropdown(...newItems)
 		$(".dropdown-1").dropdown(...newItems)
+
+		$(".dtpckr").datepicker()
 	})
 
 	// The rest of the code goes here!

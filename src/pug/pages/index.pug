@@ -23,6 +23,7 @@ html(lang="en")
 		include /modules/nav/nav
 		include /modules/footer/footer
 		include /modules/copyright/copyright
+		include /modules/datepicker/datepicker
 	body
 		+nav(true, "Залог Успехов")
 		+nav
@@ -71,4 +72,6 @@ html(lang="en")
 		.dropdown-2(style="width: 320px;")
 		.dropdown-3(style="width: 320px;")
 		+link("sample text", "#")
-		//- +slider()
+		+slider()
+		+datepicker()
+		.dtpckr
