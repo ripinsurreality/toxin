@@ -1,19 +1,21 @@
+import { DatepickerModel } from "./datepickerModel"
+
 export class DatepickerView {
 	$body: JQuery
 	nav: DatepickerNav
 	main: DatepickerMain
 	// control: DatepickerControl
-	currDate: Date
+	today = new Date()
 
-	constructor(date = new Date()) {
-		this.currDate = date
+	constructor(public date = new Date(), model: DatepickerModel) {
 		this.$body = $(`<div class="datepicker"></div>`)
 		const flipMonth = (months: number) => {
-			this.currDate.setMonth(this.currDate.getMonth() + months)
-			this.main.dates.rebuildMonth(this.currDate)
+			this.date.setMonth(this.date.getMonth() + months)
+			this.main.dates.rebuildMonth(this.date)
+			this.nav.resetDisplay(this.date)
 		}
-		this.nav = new DatepickerNav(flipMonth)
-		this.main = new DatepickerMain(this.currDate)
+		this.nav = new DatepickerNav(flipMonth, this.date)
+		this.main = new DatepickerMain(this.date, model)
 
 		this.$body.append(this.nav.render(), this.main.render())
 	}
@@ -29,15 +31,23 @@ class DatepickerNav {
 	$display: JQuery
 	$arrowForward: JQuery
 
-	constructor(flipMonth: (months: number) => void, displayDate: Date = new Date()) {
+	constructor(
+		flipMonth: (months: number) => void,
+		displayDate: Date = new Date()
+	) {
 		this.$body = $(`<div class="datepicker__nav"></div>`)
 		this.$arrowBack = $(`<div class="datepicker__arrow">arrow_back</div>`)
 		this.$display = $(
-			`<div class="datepicker__display">${displayDate.toLocaleString("ru", {
-				month: "long",
-			})} ${displayDate.getFullYear()}</div>`
+			`<div class="datepicker__display">${displayDate.toLocaleString(
+				"ru",
+				{
+					month: "long",
+				}
+			)} ${displayDate.getFullYear()}</div>`
 		)
-		this.$arrowForward = $(`<div class="datepicker__arrow">arrow_forward</div>`)
+		this.$arrowForward = $(
+			`<div class="datepicker__arrow">arrow_forward</div>`
+		)
 
 		this.$arrowBack.on({
 			click: () => {
@@ -58,6 +68,14 @@ class DatepickerNav {
 		this.$body.append(this.$arrowBack, this.$display, this.$arrowForward)
 	}
 
+	resetDisplay(date: Date) {
+		this.$display.text(
+			`${date.toLocaleString("ru", {
+				month: "long",
+			})} ${date.getFullYear()}`
+		)
+	}
+
 	render() {
 		return this.$body
 	}
@@ -68,10 +86,10 @@ class DatepickerMain {
 	week: DatepickerWeek
 	dates: DatepickerDates
 
-	constructor(date: Date) {
+	constructor(date: Date, model: DatepickerModel) {
 		this.$body = $(`<div class="datepicker__main"></div>`)
 		this.week = new DatepickerWeek()
-		this.dates = new DatepickerDates(date)
+		this.dates = new DatepickerDates(date, model)
 
 		this.$body.append(this.week.render(), this.dates.render())
 	}
@@ -88,7 +106,9 @@ class DatepickerWeek {
 	constructor() {
 		this.$body = $(`<div class="datepicker__week"></div>`)
 		this.names.forEach((name) => {
-			this.$body.append($(`<div class="datepicker__weekday">${name}</div>`))
+			this.$body.append(
+				$(`<div class="datepicker__weekday">${name}</div>`)
+			)
 		})
 	}
 
@@ -103,22 +123,39 @@ class DatepickerDates {
 	currMonthDates: JQuery[] = []
 	nextMonthDates: JQuery[] = []
 
-	constructor(date: Date) {
+	constructor(date: Date, model: DatepickerModel) {
 		this.$body = $(`<div class="datepicker__dates"></div>`)
-		this.buildPrevMonthDates(date)
-		this.buildCurrMonthDates(date)
-		this.buildNextMonthDates(date)
 
-		this.$body.append(this.prevMonthDates, this.currMonthDates, this.nextMonthDates)
+		this.$body.append(
+			this.buildPrevMonthDates(date),
+			this.buildCurrMonthDates(date),
+			this.buildNextMonthDates(date)
+		)
 	}
 
 	getCorrectDay(wrongDay: number) {
 		return wrongDay > 0 ? wrongDay - 1 : 6
 	}
 
+	isToday(date: Date) {
+		const today = new Date()
+		return (
+			new Date(
+				date.getFullYear(),
+				date.getMonth(),
+				date.getDate()
+			).getTime() ===
+			new Date(
+				today.getFullYear(),
+				today.getMonth(),
+				today.getDate()
+			).getTime()
+		)
+	}
+
 	buildPrevMonthDates(currDate: Date) {
 		this.prevMonthDates = []
-		const currMonthFirstWeekday = currDate.getDay()
+		const currMonthFirstWeekday = this.getCorrectDay(currDate.getDay())
 		const prevMonthLastDay = new Date(
 			currDate.getFullYear(),
 			currDate.getMonth(),
@@ -126,8 +163,14 @@ class DatepickerDates {
 		).getDate()
 		for (let i = currMonthFirstWeekday; i > 0; i--) {
 			const dateNum = prevMonthLastDay + 1 - i
-			this.prevMonthDates.push(new DatepickerDate(dateNum).render())
+			this.prevMonthDates.push(
+				new DatepickerDate(
+					new Date(currDate.getFullYear(), currDate.getMonth() - 1, dateNum)
+				).render()
+			)
 		}
+
+		return this.prevMonthDates
 	}
 
 	buildCurrMonthDates(currDate: Date) {
@@ -138,29 +181,46 @@ class DatepickerDates {
 			0
 		).getDate()
 		for (let i = 1; i <= currMonthLastDay; i++) {
-			this.currMonthDates.push(new DatepickerDate(i).render())
+			this.currMonthDates.push(
+				new DatepickerDate(
+					new Date(currDate.getFullYear(), currDate.getMonth(), i)
+				).render()
+			)
 		}
+
+		return this.currMonthDates
 	}
 
 	buildNextMonthDates(currDate: Date) {
 		this.nextMonthDates = []
 		const currMonthLastWeekday = this.getCorrectDay(
-			new Date(currDate.getFullYear(), currDate.getMonth() + 1, 0).getDay()
+			new Date(
+				currDate.getFullYear(),
+				currDate.getMonth() + 1,
+				0
+			).getDay()
 		)
 		const nextMonthDays = 7 - currMonthLastWeekday - 1
 
 		for (let i = 1; i <= nextMonthDays; i++) {
-			this.nextMonthDates.push(new DatepickerDate(i).render())
+			this.nextMonthDates.push(
+				new DatepickerDate(
+					new Date(currDate.getFullYear(), currDate.getMonth() + 1, i)
+				).render()
+			)
 		}
+
+		return this.nextMonthDates
 	}
 
 	rebuildMonth(date: Date) {
-		console.log("rebuilt")
-		this.buildPrevMonthDates(date)
-		this.buildCurrMonthDates(date)
-		this.buildNextMonthDates(date)
-
-		this.$body.html()
+		this.$body
+			.html("")
+			.append(
+				this.buildPrevMonthDates(date),
+				this.buildCurrMonthDates(date),
+				this.buildNextMonthDates(date)
+			)
 	}
 
 	render() {
@@ -172,9 +232,25 @@ class DatepickerDate {
 	$body: JQuery
 	$date: JQuery
 
-	constructor(date: number) {
+	constructor(date: Date, other?: boolean) {
 		this.$body = $(`<div class="datepicker__cell"></div>`)
-		this.$date = $(`<div class="datepicker__date">${date}</div>`)
+		const today = new Date()
+		const isToday =
+			date.getTime() ===
+			new Date(
+				today.getFullYear(),
+				today.getMonth(),
+				today.getDate()
+			).getTime()
+		this.$date = $(
+			`<div class="datepicker__date${
+				isToday
+					? " datepicker__date--today"
+					: other
+					? " datepicker__date--other"
+					: ""
+			}">${date}</div>`
+		)
 
 		this.$body.append(this.$date)
 	}
