@@ -160,7 +160,8 @@ class DatepickerDates {
 						currDate.getFullYear(),
 						currDate.getMonth() - 1,
 						dateNum
-					)
+					),
+					true
 				).render()
 			)
 		}
@@ -202,7 +203,12 @@ class DatepickerDates {
 			this.nextMonthDates.push(
 				new DatepickerDate(
 					this.model,
-					new Date(currDate.getFullYear(), currDate.getMonth() + 1, i)
+					new Date(
+						currDate.getFullYear(),
+						currDate.getMonth() + 1,
+						i
+					),
+					true
 				).render()
 			)
 		}
