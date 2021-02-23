@@ -161,7 +161,7 @@ class DatepickerDates {
 			currDate.getMonth(),
 			0
 		).getDate()
-		for (let i = currMonthFirstWeekday; i > 0; i--) {
+		for (let i = currMonthFirstWeekday; i > 1; i--) {
 			const dateNum = prevMonthLastDay + 1 - i
 			this.prevMonthDates.push(
 				new DatepickerDate(
@@ -249,7 +249,7 @@ class DatepickerDate {
 					: other
 					? " datepicker__date--other"
 					: ""
-			}">${date}</div>`
+			}">${date.getDate()}</div>`
 		)
 
 		this.$body.append(this.$date)
