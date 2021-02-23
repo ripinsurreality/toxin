@@ -1,19 +1,15 @@
 export class DatepickerModel {
-	firstDate?: Date
-	lastDate?: Date
+	dates: Date[] = []
+	lastSetDate: number = 0
 
 	constructor() {}
 
 	resetDates() {
-		this.firstDate = undefined
-		this.lastDate = undefined
+		this.dates = []
 	}
 
-	setFirstDate(date: Date) {
-		this.firstDate = new Date(date.getTime())
-	}
-
-	setLastDate(date: Date) {
-		this.lastDate = new Date(date.getTime())
+	setDate(date: Date) {
+		this.dates[this.lastSetDate] = date
+		this.lastSetDate = this.lastSetDate === 0 ? 1 : 0
 	}
 }

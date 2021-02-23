@@ -4,8 +4,7 @@ export class DatepickerView {
 	$body: JQuery
 	nav: DatepickerNav
 	main: DatepickerMain
-	// control: DatepickerControl
-	today = new Date()
+	control: DatepickerControl
 
 	constructor(public date = new Date(), model: DatepickerModel) {
 		this.$body = $(`<div class="datepicker"></div>`)
@@ -16,8 +15,13 @@ export class DatepickerView {
 		}
 		this.nav = new DatepickerNav(flipMonth, this.date)
 		this.main = new DatepickerMain(this.date, model)
+		this.control = new DatepickerControl(model)
 
-		this.$body.append(this.nav.render(), this.main.render())
+		this.$body.append(
+			this.nav.render(),
+			this.main.render(),
+			this.control.render()
+		)
 	}
 
 	render() {
@@ -122,9 +126,11 @@ class DatepickerDates {
 	prevMonthDates: JQuery[] = []
 	currMonthDates: JQuery[] = []
 	nextMonthDates: JQuery[] = []
+	model: DatepickerModel
 
 	constructor(date: Date, model: DatepickerModel) {
 		this.$body = $(`<div class="datepicker__dates"></div>`)
+		this.model = model
 
 		this.$body.append(
 			this.buildPrevMonthDates(date),
@@ -135,22 +141,6 @@ class DatepickerDates {
 
 	getCorrectDay(wrongDay: number) {
 		return wrongDay > 0 ? wrongDay - 1 : 6
-	}
-
-	isToday(date: Date) {
-		const today = new Date()
-		return (
-			new Date(
-				date.getFullYear(),
-				date.getMonth(),
-				date.getDate()
-			).getTime() ===
-			new Date(
-				today.getFullYear(),
-				today.getMonth(),
-				today.getDate()
-			).getTime()
-		)
 	}
 
 	buildPrevMonthDates(currDate: Date) {
@@ -165,7 +155,12 @@ class DatepickerDates {
 			const dateNum = prevMonthLastDay + 1 - i
 			this.prevMonthDates.push(
 				new DatepickerDate(
-					new Date(currDate.getFullYear(), currDate.getMonth() - 1, dateNum)
+					this.model,
+					new Date(
+						currDate.getFullYear(),
+						currDate.getMonth() - 1,
+						dateNum
+					)
 				).render()
 			)
 		}
@@ -183,6 +178,7 @@ class DatepickerDates {
 		for (let i = 1; i <= currMonthLastDay; i++) {
 			this.currMonthDates.push(
 				new DatepickerDate(
+					this.model,
 					new Date(currDate.getFullYear(), currDate.getMonth(), i)
 				).render()
 			)
@@ -205,6 +201,7 @@ class DatepickerDates {
 		for (let i = 1; i <= nextMonthDays; i++) {
 			this.nextMonthDates.push(
 				new DatepickerDate(
+					this.model,
 					new Date(currDate.getFullYear(), currDate.getMonth() + 1, i)
 				).render()
 			)
@@ -214,6 +211,7 @@ class DatepickerDates {
 	}
 
 	rebuildMonth(date: Date) {
+		DatepickerDate.clear()
 		this.$body
 			.html("")
 			.append(
@@ -229,30 +227,140 @@ class DatepickerDates {
 }
 
 class DatepickerDate {
+	static instances: DatepickerDate[]
+
 	$body: JQuery
 	$date: JQuery
 
-	constructor(date: Date, other?: boolean) {
+	constructor(
+		public model: DatepickerModel,
+		public date: Date,
+		public other?: boolean
+	) {
+		if (!Array.isArray(DatepickerDate.instances)) {
+			DatepickerDate.instances = []
+		}
+		DatepickerDate.instances.push(this)
+
 		this.$body = $(`<div class="datepicker__cell"></div>`)
+
+		this.$date = $(`<div class="datepicker__date">${date.getDate()}</div>`)
+		this.resetClasses()
+
+		this.$body.on({
+			click: () => {
+				model.setDate(date)
+				DatepickerDate.refresh()
+			},
+		})
+
+		this.$body.append(this.$date)
+	}
+
+	get isToday() {
 		const today = new Date()
-		const isToday =
-			date.getTime() ===
+		return (
+			this.date.getTime() ===
 			new Date(
 				today.getFullYear(),
 				today.getMonth(),
 				today.getDate()
 			).getTime()
-		this.$date = $(
-			`<div class="datepicker__date${
-				isToday
-					? " datepicker__date--today"
-					: other
-					? " datepicker__date--other"
-					: ""
-			}">${date.getDate()}</div>`
 		)
+	}
 
-		this.$body.append(this.$date)
+	static clear() {
+		DatepickerDate.instances = []
+	}
+
+	static refresh() {
+		DatepickerDate.instances.forEach((item) => {
+			item.resetClasses()
+		})
+	}
+
+	resetClasses() {
+		this.$date.removeClass().addClass("datepicker__date")
+
+		const firstDateExists = typeof this.model.dates[0] !== "undefined"
+		const secondDateExists = typeof this.model.dates[1] !== "undefined"
+
+		const thisIsFirstDate =
+			firstDateExists &&
+			this.date.getTime() === this.model.dates[0].getTime()
+		const thisIsSecondDate =
+			secondDateExists &&
+			this.date.getTime() === this.model.dates[1].getTime()
+
+		if (thisIsFirstDate || thisIsSecondDate) {
+			this.$date.addClass("datepicker__date--selected")
+		} else if (this.isToday) {
+			this.$date.addClass("datepicker__date--today")
+		} else if (this.other) {
+			this.$date.addClass("datepicker__date--other")
+		}
+
+		this.$body.removeClass().addClass("datepicker__cell")
+
+		if (firstDateExists && secondDateExists) {
+			if (
+				(thisIsFirstDate &&
+					this.model.dates[0].getTime() <
+						this.model.dates[1].getTime()) ||
+				(thisIsSecondDate &&
+					this.model.dates[1].getTime() <
+						this.model.dates[0].getTime())
+			) {
+				this.$body.addClass("datepicker__cell--start")
+			} else if (
+				(thisIsFirstDate &&
+					this.model.dates[0].getTime() >
+						this.model.dates[1].getTime()) ||
+				(thisIsSecondDate &&
+					this.model.dates[1].getTime() >
+						this.model.dates[0].getTime())
+			) {
+				this.$body.addClass("datepicker__cell--end")
+			} else if (
+				(this.date.getTime() > this.model.dates[0].getTime() &&
+					this.date.getTime() < this.model.dates[1].getTime()) ||
+				(this.date.getTime() < this.model.dates[0].getTime() &&
+					this.date.getTime() > this.model.dates[1].getTime())
+			) {
+				this.$body.addClass("datepicker__cell--middle")
+			}
+		}
+	}
+
+	render() {
+		return this.$body
+	}
+}
+
+class DatepickerControl {
+	$body: JQuery
+	$clear: JQuery
+	$accept: JQuery
+
+	constructor(model: DatepickerModel) {
+		this.$body = $(`<div class="datepicker__control"></div>`)
+		this.$clear = $(`<h3 class="datepicker__button">Очистить</h3>`)
+		this.$accept = $(`<h3 class="datepicker__button">Применить</h3>`)
+
+		this.$clear.on({
+			click: () => {
+				model.resetDates()
+				DatepickerDate.refresh()
+			},
+		})
+
+		this.$accept.on({
+			click: () => {
+				console.log("accepted")
+			},
+		})
+
+		this.$body.append(this.$clear, this.$accept)
 	}
 
 	render() {
