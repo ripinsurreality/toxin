@@ -1,3 +1,3 @@
 interface JQuery {
-	datepicker(): JQuery
+	datepicker(date?: any): JQuery
 }

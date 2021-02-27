@@ -1,5 +1,7 @@
+import { Dayjs } from "dayjs"
+
 export class DatepickerModel {
-	dates: Date[] = []
+	dates: Dayjs[] = []
 	lastSetDate: number = 0
 
 	constructor() {}
@@ -8,7 +10,7 @@ export class DatepickerModel {
 		this.dates = []
 	}
 
-	setDate(date: Date) {
+	setDate(date: Dayjs) {
 		this.dates[this.lastSetDate] = date
 		this.lastSetDate = this.lastSetDate === 0 ? 1 : 0
 	}
