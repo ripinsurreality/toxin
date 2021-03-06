@@ -4,7 +4,7 @@ export class DatepickerModel {
 	dates: Dayjs[] = []
 	lastSetDate: number = 0
 
-	constructor() {}
+	constructor(private multi?: boolean) {}
 
 	resetDates() {
 		this.dates = []
@@ -12,6 +12,24 @@ export class DatepickerModel {
 
 	setDate(date: Dayjs) {
 		this.dates[this.lastSetDate] = date
-		this.lastSetDate = this.lastSetDate === 0 ? 1 : 0
+		if (this.multi) {
+			this.lastSetDate = this.lastSetDate === 0 ? 1 : 0
+		}
+	}
+
+	get firstDate() {
+		return this.dates.filter(
+			(i) =>
+				i.valueOf() ===
+				Math.min(...this.dates.map((date) => date.valueOf()))
+		)[0]
+	}
+
+	get lastDate() {
+		return this.dates.filter(
+			(i) =>
+				i.valueOf() ===
+				Math.max(...this.dates.map((date) => date.valueOf()))
+		)[0]
 	}
 }

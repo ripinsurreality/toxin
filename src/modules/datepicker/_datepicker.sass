@@ -7,7 +7,8 @@
 		display: flex
 		align-items: center
 		justify-content: space-between
-		width: 150px
+		width: 266px
+		cursor: pointer
 
 	&__input-arrow
 		&::after
@@ -23,13 +24,17 @@
 
 	&__datepicker
 		background: #fff
-		border: 1px solid $lightgray
 		width: 320px
-		padding: 20px
 		border-radius: 4px
 		position: absolute
 		top: 100%
 		left: 0
+		padding: 20px
+		border: 1px solid $lightgray
+		display: none
+
+		&--open
+			display: block
 
 	&__nav
 		width: 100%
@@ -43,7 +48,6 @@
 		color: $dark
 		flex-grow: 1
 		text-align: center
-		cursor: pointer
 		text-transform: capitalize
 
 	&__arrow

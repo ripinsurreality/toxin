@@ -12,7 +12,11 @@ dayjs.extend(weekday)
 dayjs.extend(isToday)
 dayjs.extend(isBetween)
 
-export class DatepickerView {
+interface ViewObserver {
+	update(event: string, data: any): void
+}
+
+export class View {
 	$body: JQuery
 	$input: JQuery
 	$inputLabel: JQuery
@@ -21,6 +25,7 @@ export class DatepickerView {
 	nav: DatepickerNav
 	main: DatepickerMain
 	control: DatepickerControl
+	observers: ViewObserver[] = []
 
 	constructor(
 		public date = dayjs(),
@@ -113,6 +118,18 @@ export class DatepickerView {
 
 	setDate(date: Dayjs) {
 		this.date = date
+	}
+
+	sub(o: ViewObserver) {
+		this.observers.push(o)
+	}
+
+	unsub(o: ViewObserver) {
+		this.observers.filter(ob => o !== ob)
+	}
+
+	update(event: string, data: any) {
+		this.observers.forEach(o => o.update(event, data))
 	}
 
 	render() {

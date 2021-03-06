@@ -1,3 +1,8 @@
+interface DatepickerProps {
+	date?: object
+	multi?: boolean
+}
+
 interface JQuery {
-	datepicker(date?: any): JQuery
+	datepicker({}?: DatepickerProps): JQuery
 }

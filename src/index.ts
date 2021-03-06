@@ -4,6 +4,7 @@ import "@modules/dropdown/dropdown"
 import "@modules/datepicker/datepicker"
 import "inputmask/dist/jquery.inputmask.min"
 import "inputmask/dist/bindings/inputmask.binding"
+import dayjs from "dayjs"
 
 const newItems: ItemType[] = [
 	"Какие удобства",
@@ -39,7 +40,7 @@ const newItems: ItemType[] = [
 		$(".dropdown-2").dropdown(...newItems)
 		$(".dropdown-1").dropdown(...newItems)
 
-		$(".dtpckr").datepicker()
+		$(".dtpckr").datepicker({ multi: true})
 	})
 
 	// The rest of the code goes here!
