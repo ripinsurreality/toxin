@@ -1,0 +1,30 @@
+include /modules/inputs/input-text
+include /modules/radio/radio
+include /modules/toggle/toggle
+include /modules/button/button
+include /modules/link/link
+
+mixin signup()
+	.signup
+		h1.signup__title Регистрация аккаунта
+		.signup__firstname
+			+input-text("", "Имя")
+		.signup__lastname
+			+input-text("", "Фамилия")
+		.signup__gender
+			+radio("Мужчина", "gender")
+			+radio("Женщина", "gender")
+		.signup__birthday
+			+input-text("Дата рождения", "ДД.ММ.ГГГГ")(data-inputmask="'mask': '99.99.9999'")
+		.signup__email
+			+input-text("Данные для входа в сервис", "Email")
+		.signup__password
+			+input-text("", "Пароль")
+		.signup__toggle
+			+toggle("Получать спецпредложения")
+		.signup__submit
+			+button("arrow", "перейти к оплате")
+		.signup__bottom
+			a(href="#").signup__link Уже есть аккаунт на Toxin
+			.signup__login
+				+button("hollow", "войти")

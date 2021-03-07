@@ -19,6 +19,13 @@ const newItems: ItemType[] = [
 	},
 ]
 
+const guests: ItemType[] = [
+	"Сколько гостей",
+	"Взрослые",
+	"Дети",
+	"Младенцы"
+]
+
 // IIFE - Immediately Invoked Function Expression
 ;(function ($, window, document) {
 	// console.log($)
@@ -40,7 +47,10 @@ const newItems: ItemType[] = [
 		$(".dropdown-2").dropdown(...newItems)
 		$(".dropdown-1").dropdown(...newItems)
 
-		$(".dtpckr").datepicker({ multi: true})
+		$(".dtpckr").datepicker({ multi: true })
+
+		$(".finder__datepicker").datepicker({ multi: true })
+		$(".finder__dropdown").dropdown(...guests)
 	})
 
 	// The rest of the code goes here!
