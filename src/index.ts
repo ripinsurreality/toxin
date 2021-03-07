@@ -51,6 +51,9 @@ const guests: ItemType[] = [
 
 		$(".finder__datepicker").datepicker({ multi: true })
 		$(".finder__dropdown").dropdown(...guests)
+
+		$(".room__datepicker").datepicker({ multi: true })
+		$(".room__dropdown").dropdown(...guests)
 	})
 
 	// The rest of the code goes here!
