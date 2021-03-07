@@ -1,0 +1,14 @@
+include /modules/inputs/input-text
+include /modules/button/button
+
+mixin signin 
+	.signin
+		h1.signin__title Войти
+		+input-text("", "Email")
+		+input-text("", "Пароль")
+		.signin__submit
+			+button("arrow", "войти")
+		.signin__bottom
+			a(href="#") Нет аккаунта на Toxin?
+			.signin__create
+				+button("hollow", "создать")
