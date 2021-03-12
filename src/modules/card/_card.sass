@@ -1,0 +1,100 @@
+.card
+	width: 270px
+	height: 257px
+	display: flex
+	flex-direction: column
+	border-radius: 4px
+	background: #fff
+	overflow: hidden
+
+	&__images
+		position: relative
+		height: 100%
+		cursor: pointer
+
+	&__image
+		background: red
+		height: 100%
+
+	&__arrows
+		position: absolute
+		top: 0
+		left: 0
+		height: 100%
+		width: 100%
+		display: flex
+		justify-content: space-between
+		align-items: center
+
+	&__arrow
+		&-left,
+		&-right
+			@extend %material-icons
+			font-size: 24px
+			line-height: 24px
+			width: 44px
+			height: 44px
+			display: flex
+			justify-content: center
+			align-items: center
+			color: #fff
+
+		&-left
+			transform: rotate(90deg)
+		&-right
+			transform: rotate(-90deg)
+
+	&__balls
+		display: flex
+		justify-content: flex-end
+		position: relative
+		right: 15px
+		bottom: 15px
+		gap: 3.75px
+
+	&__ball
+		height: 7.5px
+		width: 7.5px
+		border: 1px solid #fff
+		border-radius: 7px
+
+		&--full
+			background: #fff
+
+
+	&__label
+		padding: 20px
+
+		&-top,
+		&-bottom
+			display: flex
+			justify-content: space-between
+
+		&-top
+			padding-bottom: 10px
+
+		&-bottom
+			border-top: 1px solid $light
+			padding-top: 10px
+
+	&__title
+		display: flex
+		align-items: flex-end
+		font-weight: 700
+		line-height: 17px
+		color: $dark
+
+	&__number
+		font-size: 19px
+		line-height: 23px
+	
+	&__extra
+		text-transform: uppercase
+		color: $purple
+		font-size: 12px
+		line-height: 14px
+		font-weight: 400
+
+	&__price,
+	&__reviews
+		color: $gray

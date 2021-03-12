@@ -1,0 +1,24 @@
+include /modules/rate/rate
+
+mixin card 
+	.card
+		.card__images 
+			.card__image 
+			.card__arrows 
+				.card__arrow-left expand_more
+				.card__arrow-right expand_more
+			.card__balls 
+				.card__ball.card__ball--full
+				.card__ball
+				.card__ball
+				.card__ball
+		.card__label 
+			.card__label-top
+				.card__title №&nbsp;
+					.card__number 888
+					.card__extra люкс
+				.card__price #[b 9 990₽] в сутки
+			.card__label-bottom
+				.card__rate 
+					+rate("card-rate")
+				.card__reviews #[b 145] Отзывов
