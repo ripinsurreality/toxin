@@ -1,5 +1,5 @@
 include /modules/checkbox/checkbox.pug
-mixin expandable-checkbox-list(title, items)
+mixin expandable-checkbox-list(title, ...items)
 	details.checkbox-list
 		summary.checkbox-list__summary
 			h3.checkbox-list__title= title
@@ -7,4 +7,4 @@ mixin expandable-checkbox-list(title, items)
 			if items
 				each item in items
 					li.checkbox-list__list-item
-						+checkbox(item[0], item[1])
+						+checkbox(item)

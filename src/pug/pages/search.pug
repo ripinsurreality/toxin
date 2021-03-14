@@ -1,0 +1,47 @@
+doctype html
+html(lang="en")
+	head
+		meta(charset="UTF-8")
+		meta(http-equiv="X-UA-Compatible", content="IE=edge")
+		meta(name="viewport", content="width=device-width, initial-scale=1.0")
+		title Toxin
+		include /modules/nav/nav
+		include /modules/card/card
+		include /modules/checkbox/checkbox
+		include /modules/rich-checkbox/rich-checkbox
+		include /modules/expandable-checkbox-list/expandable-checkbox-list
+		include /modules/footer/footer
+		include /modules/copyright/copyright
+	body 
+		+nav
+		.search
+			.search__filters 
+				.search__datepicker 
+				.search__guests 
+				.search__price-slider 
+				.search__rules 
+					h3 правила дома
+					+checkbox("Можно курить")
+					+checkbox("Можно с питомцами")
+					+checkbox("Можно пригласить гостей (до 10 человек)")
+				.search__access 
+					h3 доступность
+					+rich-checkbox("Широкий коридор", "Ширина коридоров в номере не менее 91 см.")
+					+rich-checkbox("Помощник для инвалидов", "На 1 этаже вас встретит специалист  и проводит до номера.")
+				.search__availability 
+					h3 удобства номера
+				.search__comfort 
+				.search__extra 
+					+expandable-checkbox-list("дополнительные удобства", "Завтрак", "Письменный стол", "Стул для кормления", "Кроватка", "Телевизор", "Шампунь")
+
+			.search__results 
+				h1.search__title Номера, которые мы для вас подобрали
+				.search__rooms 
+					- let i = 12
+					while i > 0
+						+card 
+						- i--
+				.search__pagination  
+
+		+footer 
+		+copyright
