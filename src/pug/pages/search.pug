@@ -12,6 +12,7 @@ html(lang="en")
 		include /modules/expandable-checkbox-list/expandable-checkbox-list
 		include /modules/footer/footer
 		include /modules/copyright/copyright
+		include /modules/pagination/pagination
 	body 
 		+nav
 		.search
@@ -20,14 +21,21 @@ html(lang="en")
 				.search__guests 
 				.search__price-slider 
 				.search__rules 
-					h3 правила дома
-					+checkbox("Можно курить")
-					+checkbox("Можно с питомцами")
-					+checkbox("Можно пригласить гостей (до 10 человек)")
+					h3.search__list-title правила дома
+					ul.search__list 
+						li.search__list-item
+							+checkbox("Можно курить")
+						li.search__list-item
+							+checkbox("Можно с питомцами")
+						li.search__list-item
+							+checkbox("Можно пригласить гостей (до 10 человек)")
 				.search__access 
-					h3 доступность
-					+rich-checkbox("Широкий коридор", "Ширина коридоров в номере не менее 91 см.")
-					+rich-checkbox("Помощник для инвалидов", "На 1 этаже вас встретит специалист  и проводит до номера.")
+					h3.search__list-title доступность
+					ul.search__list 
+						li.search__list-item
+							+rich-checkbox("Широкий коридор", "Ширина коридоров в номере не менее 91 см.")
+						li.search__list-item
+							+rich-checkbox("Помощник для инвалидов", "На 1 этаже вас встретит специалист  и проводит до номера.")
 				.search__availability 
 					h3 удобства номера
 				.search__comfort 
@@ -42,6 +50,7 @@ html(lang="en")
 						+card 
 						- i--
 				.search__pagination  
+					+pagination
 
 		+footer 
 		+copyright
