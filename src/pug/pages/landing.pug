@@ -1,18 +1,7 @@
-<!DOCTYPE html>
-html(lang="en")
-	head
-		meta(charset="UTF-8")
-		meta(name="viewport" content="width=device-width, initial-scale=1.0")
-		title Toxin 
-		include /modules/nav/nav
-		include /modules/finder/finder
-		include /modules/footer/footer
-		include /modules/copyright/copyright
-	body 
-		+nav
-		.hero 
-			.hero__finder
-				+finder
-			.hero__extra Лучшие номера для вашей работы, отдыха и просто вдохновения
-		+footer 
-		+copyright
+extends /pug/layout/layout
+include /modules/finder/finder
+block content
+	.hero 
+		.hero__finder
+			+finder
+		.hero__extra Лучшие номера для вашей работы, отдыха и просто вдохновения
