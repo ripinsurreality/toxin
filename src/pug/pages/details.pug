@@ -1,15 +1,37 @@
 extends /pug/layout/layout
 include /modules/icon-text-list/icon-text-list
+include /modules/comment/comment
+include /modules/room/room
+include /modules/bullet-list/bullet-list
 block content 
 	.showcase 
 	.details 
 		.details__text
 			.details__text-top
 				.details__benefits 
+					h2.details__title Сведения о номере
+					.details__benefits-list 
+						+icon-text-list(["insert_emoticon", "Комфорт", "Шумоподовляющие стены"], ["location_city", "Удобство", "Окно в каждой из спален"], ["whatshot", "Уют", "Номер оснащёт камином"])
 				.details__rating 
+					h2.details__title Впечатления от номера
+					.details__circle
 			.details__text-middle
-				.details__reviews 
+				.details__reviews
+					.details__title 
+						h2.details__reviews-title Отзывы посетителей номера
+						.details__number 2 отзыва
+					ul.details__reviews-list 
+						li.details__reviews-item 
+							+comment("", "Мурад Сарафанов", "5 дней назад", "12", "Великолепный матрас на кровати в основной спальне! А пуфик вообще потрясающий. И стены, действительно, шумоподавляющие. Выкрикивал комплименты повару — никто не жаловался из соседей.")
+						li.details__reviews-item 
+							+comment("", "Патрисия Стёклышкова", "Неделю назад", "2", "Обслуживание на высоте! Всё аккуратно, чисто. Завтраки в номер советую заказать, каждый день новое блюдо и десерт как комплимент")
 			.details__text-bottom
 				.details__rules 
+					h2.details__title Правила
+					.details__rules-list 
+						+bullet-list("Нельзя с питомцами", "Без вечеринок и мероприятий", "Время прибытия — после 13:00, а выезд до 12:00")
 				.details__cancel
+					h2.details__title Отмена
+					.details__cancel-text Бесплатная отмена в течение 48 ч. После этого при отмене не позднее чем за 5 дн. до прибытия вы получите полный возврат за вычетом сбора за услуги.
 		.details__card
+			+room
