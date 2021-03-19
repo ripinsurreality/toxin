@@ -2,6 +2,7 @@
 	width: 80%
 	margin: 70px auto
 	display: flex
+	gap: 70px
 
 	&__text
 
@@ -9,13 +10,25 @@
 		&-bottom
 			display: flex
 			justify-content: space-between
+			gap: 70px
 
 		&-top,
 		&-middle
 			margin-bottom: 30px
 
+	&__reviews
+		&-list
+			display: flex
+			flex-direction: column
+			gap: 22px
+
 	&__cancel
-		width: 341px
+		max-width: 341px
 	
-	&__title
+	&__title,
+	&__title-top
 		margin-bottom: 20px
+
+	&__title-top
+		display: flex
+		justify-content: space-between
