@@ -24,7 +24,7 @@
 
 	&__cancel
 		max-width: 341px
-	
+
 	&__title,
 	&__title-top
 		margin-bottom: 20px
@@ -32,7 +32,36 @@
 	&__title-top
 		display: flex
 		justify-content: space-between
-		
+
+	&__color
+		display: flex
+		align-items: center
+		gap: 5px
+
+		&::before
+			content: ""
+			width: 10px
+			height: 10px
+			border-radius: 10px
+
+		&--orange
+			&::before
+				background: linear-gradient(180deg, #FFE39C 0%, #FFBA9C 100%)
+
+		&--green
+			&::before
+				background: $secondary-gradient
+
+		&--blue
+			&::before
+				background: $primary-gradient
+
+		&--black
+			&::before
+				background: linear-gradient(180deg, #919191 0%, #3D4975 100%)
+
+
+
 .showcase
 	display: flex
 	height: 485px
@@ -50,3 +79,5 @@
 	&__pic
 		height: 50%
 		background: gray
+
+	
