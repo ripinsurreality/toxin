@@ -1,5 +1,9 @@
 import { Item } from "./dropdownModel"
 
+export interface ViewObserver {
+	updateView(options: any): void
+}
+
 export class DropdownView {
 	$dropdown: JQuery
 	$input: JQuery
@@ -7,30 +11,17 @@ export class DropdownView {
 	$arrow: JQuery
 	bottom: DropdownBottom
 
-	constructor(defaultItem: string, items: Item[]) {
+	set label(t: string) {
+		this.$label.text(t)
+	}
+
+	constructor() {
 		/* INITS */
 		this.$dropdown = $("<div class='dropdown'></div>").attr("tabindex", 0)
 		this.$input = $("<div class='dropdown__input'></div>")
 		this.$label = $("<div class='dropdown__label'></div>")
 		this.$arrow = $("<div class='dropdown__arrow'></div>")
-		const onItemChange = () => {
-			this.$label.text(
-				items
-					.map((item) => {
-						if (item.value === 0) {
-							return ""
-						} else {
-							return `${item.value} ${item.getTitle()}`
-						}
-					})
-					.filter((item) => {
-						if (item) return item
-					})
-					.join(", ") || defaultItem
-			)
-		}
-		onItemChange()
-		this.bottom = new DropdownBottom(items, onItemChange)
+		this.bottom = new DropdownBottom(this.update)
 
 		/* EVENTS */
 		this.$dropdown.on({
@@ -67,7 +58,7 @@ export class DropdownView {
 		/* APPENDS */
 		this.$dropdown.append(
 			this.$input.append(this.$label, this.$arrow),
-			this.bottom.render()
+			this.bottom.render
 		)
 	}
 
@@ -91,59 +82,85 @@ export class DropdownView {
 		this.bottom.switchItemsTabIndex(on)
 	}
 
-	render() {
+	addItem() {
+		this.bottom.addItem()
+	}
+
+	private observers: ViewObserver[] = []
+
+	sub(o: ViewObserver) {
+		this.observers.push(o)
+	}
+
+	unsub(o: ViewObserver) {
+		this.observers.filter((ob) => o !== ob)
+	}
+
+	update = (options: any) => {
+		this.observers.forEach((o) => o.updateView(options))
+		console.log(options)
+	}
+
+	get render() {
 		return this.$dropdown
 	}
 }
 
 class DropdownBottom {
-	items: DropdownItem[]
+	items: DropdownItem[] = []
 	$body: JQuery
 	$ul: JQuery
 	$control: JQuery
 	$clear: JQuery
 	$accept: JQuery
 
-	constructor(items: Item[], onItemChange: () => void) {
+	constructor(private update: (options: any) => void) {
 		/* INITS */
 		this.$body = $("<div class='dropdown__bottom'></div>")
 		this.$ul = $("<ul class='dropdown__options'></ul>")
-		this.items = items.map(
-			(item) => new DropdownItem(item, onItemChange)
-		)
 
 		this.$control = $("<div class='dropdown__control'></div>")
 		this.$clear = $("<h3 class='dropdown__clear'>Очистить</h3>")
 		this.$accept = $("<h3 class='dropdown__accept'>Применить</h3>")
 
-
 		/* EVENTS */
 		this.$clear.on({
 			click: (e) => {
 				this.resetItems()
-			}
+			},
 		})
 
 		/* APPENDS */
 		this.items.forEach((item) => {
-			this.$ul.append(item.render())
+			this.$ul.append(item.render)
 		})
-		this.$body.append(this.$ul, this.$control.append(this.$clear, this.$accept))
+		this.$body.append(
+			this.$ul,
+			this.$control.append(this.$clear, this.$accept)
+		)
+	}
+
+	addItem() {
+		const newItem = new DropdownItem(this.update,
+			this.items.length
+		)
+		this.items.push(newItem)
+		this.$ul.append(newItem.render)
 	}
 
 	resetItems() {
-		this.items.forEach(item => {
+		this.items.forEach((item) => {
 			item.dispatchValue()
 		})
 	}
 
 	switchItemsTabIndex(on?: boolean) {
-		this.items.forEach(item => {
+		this.items.forEach((item) => {
 			item.switchTabIndex(on)
 		})
 	}
 
-	render() {
+	get render() {
 		return this.$body
 	}
 }
@@ -155,23 +172,17 @@ class DropdownItem {
 	$btnMinus: JQuery
 	$value: JQuery
 	$btnPlus: JQuery
-	item: Item
-	onItemChange: () => void
 
-	constructor(item: Item, onItemChange: () => void) {
+	constructor(private update: (options: any) => void, private index: number) {
 		/* INITS */
-		this.item = item
-		this.onItemChange = onItemChange
-
 		this.$body = $("<li class='dropdown-item'></li>")
-		this.$title = $("<h3 class='dropdown-item__title'></h3>").text(
-			this.item.getTitle(true)
-		)
+		this.$title = $("<h3 class='dropdown-item__title'></h3>")
 		this.$control = $("<div class='dropdown-item__control'></div>")
-		this.$btnMinus = $("<div class='dropdown-item__button'></div>").text("-")
-		this.$value = $("<h3 class='dropdown-item__value'></h3>").text(this.item.value)
+		this.$btnMinus = $("<div class='dropdown-item__button'></div>").text(
+			"-"
+		)
+		this.$value = $("<h3 class='dropdown-item__value'></h3>")
 		this.$btnPlus = $("<div class='dropdown-item__button'></div>").text("+")
-
 
 		/* EVENTS */
 		this.$body.on({
@@ -214,11 +225,11 @@ class DropdownItem {
 	}
 
 	dispatchValue(type?: "+" | "-") {
-		const result = this.item.dispatchValue(type)
-		if (result || result === 0) {
-			this.$value.text(result)
-			this.onItemChange()
-		}
+		this.update({
+			type: "dispatchValue",
+			payload: type,
+			index: this.index,
+		})
 	}
 
 	switchTabIndex(on?: boolean) {
@@ -241,11 +252,19 @@ class DropdownItem {
 		}
 	}
 
-	get valueNum() {
+	get value() {
 		return parseInt(this.$value.text(), 10)
 	}
 
-	render() {
+	set value(val: string | number) {
+		this.$value.text(val)
+	}
+
+	set title(t: string) {
+		this.$title.text(t)
+	}
+
+	get render() {
 		return this.$body
 	}
 }
