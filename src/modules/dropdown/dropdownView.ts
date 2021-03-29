@@ -49,7 +49,6 @@ export class DropdownView {
 					e.target === this.$dropdown.get(0)
 				) {
 					e.preventDefault()
-					console.log()
 					this.switchDropdown()
 				}
 			},
@@ -98,7 +97,6 @@ export class DropdownView {
 
 	update = (options: any) => {
 		this.observers.forEach((o) => o.updateView(options))
-		console.log(options)
 	}
 
 	get render() {
