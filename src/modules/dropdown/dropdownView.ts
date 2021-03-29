@@ -21,7 +21,7 @@ export class DropdownView {
 		this.$input = $("<div class='dropdown__input'></div>")
 		this.$label = $("<div class='dropdown__label'></div>")
 		this.$arrow = $("<div class='dropdown__arrow'></div>")
-		this.bottom = new DropdownBottom(this.update)
+		this.bottom = new DropdownBottom(this.update, this.switchDropdown)
 
 		/* EVENTS */
 		this.$dropdown.on({
@@ -61,7 +61,7 @@ export class DropdownView {
 		)
 	}
 
-	switchDropdown(on?: boolean) {
+	switchDropdown = (on?: boolean) => {
 		switch (on) {
 			case true: {
 				!this.$dropdown.hasClass("dropdown--open") &&
@@ -108,34 +108,39 @@ class DropdownBottom {
 	items: DropdownItem[] = []
 	$body: JQuery
 	$ul: JQuery
-	$control: JQuery
-	$clear: JQuery
-	$accept: JQuery
+	$control?: JQuery
+	$clear?: JQuery
+	$accept?: JQuery
 
-	constructor(private update: (options: any) => void) {
+	constructor(private update: (options: any) => void, private switchDropdown: (on?: boolean) => void) {
 		/* INITS */
 		this.$body = $("<div class='dropdown__bottom'></div>")
 		this.$ul = $("<ul class='dropdown__options'></ul>")
 
+		/* APPENDS */
+		this.$body.append(
+			this.$ul
+		)
+	}
+
+	initControl() {
 		this.$control = $("<div class='dropdown__control'></div>")
 		this.$clear = $("<h3 class='dropdown__clear'>Очистить</h3>")
 		this.$accept = $("<h3 class='dropdown__accept'>Применить</h3>")
-
-		/* EVENTS */
+		
 		this.$clear.on({
 			click: (e) => {
 				this.resetItems()
 			},
 		})
 
-		/* APPENDS */
-		this.items.forEach((item) => {
-			this.$ul.append(item.render)
+		this.$accept.on({
+			click: () => {
+				this.switchDropdown(false)
+			}
 		})
-		this.$body.append(
-			this.$ul,
-			this.$control.append(this.$clear, this.$accept)
-		)
+
+		this.$body.append(this.$control.append(this.$clear, this.$accept))
 	}
 
 	addItem() {

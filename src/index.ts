@@ -6,21 +6,6 @@ import "inputmask/dist/jquery.inputmask.min"
 import "inputmask/dist/bindings/inputmask.binding"
 import dayjs from "dayjs"
 
-const newItems: ItemType[] = [
-	"Какие удобства",
-	["Спальня", "Спальни", "Спален"],
-	{
-		title: ["Кровать", "Кровати", "Кроватей"],
-		value: 1,
-	},
-	{
-		title: ["Ванная комната", "Ванные комнаты", "Ванных комнат"],
-		value: 2,
-	},
-]
-
-const guests: ItemType[] = ["Сколько гостей", "Взрослые", "Дети", "Младенцы"]
-
 // IIFE - Immediately Invoked Function Expression
 ;(function ($, window, document) {
 	// console.log($)
@@ -36,17 +21,17 @@ const guests: ItemType[] = ["Сколько гостей", "Взрослые", "
 			step: 10,
 		})
 
-		$(".dropdown-3").dropdown(...newItems)
-		$(".dropdown-2").dropdown(...newItems)
-		$(".dropdown-1").dropdown(...newItems)
+		$(".dropdown-3").dropdown("comfort")
+		$(".dropdown-2").dropdown("guests")
+		$(".dropdown-1").dropdown("comfort", [-1, 3])
 
 		$(".dtpckr").datepicker({ multi: true })
 
 		$(".finder__datepicker").datepicker({ multi: true })
-		$(".finder__dropdown").dropdown(...guests)
+		$(".finder__dropdown").dropdown("guests")
 
 		$(".room__datepicker").datepicker({ multi: true })
-		$(".room__dropdown").dropdown(...guests)
+		$(".room__dropdown").dropdown("comfort")
 
 		// const canvas = document.querySelector(
 		// 	".details__pie"

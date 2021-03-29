@@ -1,10 +1,12 @@
 interface ItemObj {
-	title: string | [string, string, string]
+	title: ItemStringType
 	value: number
 }
 
-type ItemType = string | [string, string, string] | ItemObj
+type ItemStringType = string | [string, string, string]
+
+type ItemType = ItemStringType | ItemObj
 
 interface JQuery {
-	dropdown(...items: ItemType[]): JQuery
+	dropdown(type: "guests" | "comfort", values?: number[]): JQuery
 }
