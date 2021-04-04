@@ -1,5 +1,5 @@
 interface DatepickerProps {
-	date?: object
+	date?: Dayjs
 	multi?: boolean
 }
 

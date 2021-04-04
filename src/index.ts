@@ -27,10 +27,10 @@ import dayjs from "dayjs"
 
 		$(".dtpckr").datepicker({ multi: true })
 
-		$(".finder__datepicker").datepicker({ multi: true })
+		// $(".finder__datepicker").datepicker({ multi: true })
 		$(".finder__dropdown").dropdown("guests")
 
-		$(".room__datepicker").datepicker({ multi: true })
+		// $(".room__datepicker").datepicker({ multi: true })
 		$(".room__dropdown").dropdown("comfort")
 
 		// const canvas = document.querySelector(

@@ -1,30 +1,34 @@
 mixin datepicker
 	.datepicker 
-		.datepicker__nav 
-			.datepicker__arrow arrow_back
-			.datepicker__display Август 2019
-			.datepicker__arrow arrow_forward
-		.datepicker__main
-			.datepicker__week 
-				.datepicker__weekday Пн
-				.datepicker__weekday Вт
-				.datepicker__weekday Ср
-				.datepicker__weekday Чт
-				.datepicker__weekday Пт
-				.datepicker__weekday Сб
-				.datepicker__weekday Вс
-			.datepicker__dates
-				.datepicker__cell.datepicker__cell--start 
-					.datepicker__date.datepicker__date--selected 29
-				.datepicker__cell.datepicker__cell--middle
-					.datepicker__date.datepicker__date--other 30
-				.datepicker__cell.datepicker__cell--end 
-					.datepicker__date.datepicker__date--selected 31
-				- for (let i = 1; i <= 31; i++)
+		.datepicker__input 
+			.datepicker__input-label 
+			.datepicker__input-arrow
+		//- .datepicker__datepicker.datepicker__datepicker--open
+			.datepicker__nav 
+				.datepicker__arrow arrow_back
+				.datepicker__display Август 2019
+				.datepicker__arrow arrow_forward
+			.datepicker__main
+				.datepicker__week 
+					.datepicker__weekday Пн
+					.datepicker__weekday Вт
+					.datepicker__weekday Ср
+					.datepicker__weekday Чт
+					.datepicker__weekday Пт
+					.datepicker__weekday Сб
+					.datepicker__weekday Вс
+				.datepicker__dates
+					.datepicker__cell.datepicker__cell--start 
+						.datepicker__date.datepicker__date--selected 29
+					.datepicker__cell.datepicker__cell--middle
+						.datepicker__date.datepicker__date--other 30
+					.datepicker__cell.datepicker__cell--end 
+						.datepicker__date.datepicker__date--selected 31
+					- for (let i = 1; i <= 31; i++)
+						.datepicker__cell 
+							.datepicker__date= i
 					.datepicker__cell 
-						.datepicker__date= i
-				.datepicker__cell 
-					.datepicker__date.datepicker__date--today 1
-		.datepicker__control
-			h3.datepicker__button Очистить
-			h3.datepicker__button Применить
+						.datepicker__date.datepicker__date--today 1
+			.datepicker__control
+				h3.datepicker__button Очистить
+				h3.datepicker__button Применить

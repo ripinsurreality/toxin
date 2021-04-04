@@ -1,17 +1,15 @@
-import { DatepickerView } from "./datepickerView"
-import { DatepickerModel } from "./datepickerModel"
-import dayjs from "dayjs"
-;(function ($) {
+;import { Model } from "./Model";
+import { View } from "./View";
+import { Controller } from "./Controller";
+(function ($) {
 	$.fn.datepicker = function (
 		{ date, multi } = { date: undefined, multi: undefined }
 	): JQuery {
-		const model = new DatepickerModel(multi)
-		const view = new DatepickerView(
-			date ? (date as dayjs.Dayjs) : undefined,
-			model,
-			multi
-		)
-		this.append(view.render())
+		const model = new Model()
+		const view = new View()
+		const controller = new Controller(model, view, date, multi)
+
+		this.append(controller.render)
 		return this
 	}
 })(jQuery)

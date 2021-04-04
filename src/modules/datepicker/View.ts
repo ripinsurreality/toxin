@@ -1,4 +1,3 @@
-import { DatepickerModel } from "./datepickerModel"
 import dayjs, { Dayjs } from "dayjs"
 import "dayjs/locale/ru"
 import customParseFormat from "dayjs/plugin/customParseFormat"
@@ -13,91 +12,43 @@ dayjs.extend(isToday)
 dayjs.extend(isBetween)
 
 interface ViewObserver {
-	update(event: string, data: any): void
+	updateView(options: any): void
+}
+
+interface FlipDateArgs {
+	days?: number
+	months?: number
+	years?: number
 }
 
 export class View {
 	$body: JQuery
-	$input: JQuery
-	$inputLabel: JQuery
-	$inputArrow: JQuery
 	$datepicker: JQuery
+	input: DatepickerInput
 	nav: DatepickerNav
 	main: DatepickerMain
-	control: DatepickerControl
-	observers: ViewObserver[] = []
+	// control: DatepickerControl
 
-	constructor(
-		public date = dayjs(),
-		model: DatepickerModel,
-		multi?: boolean
-	) {
+	private date = dayjs()
+
+	constructor() {
 		this.$body = $(`<div class="datepicker"></div>`)
-		this.$input = $(`<div class="datepicker__input"></div>`).attr(
-			"tabindex",
-			0
-		)
-		this.$inputLabel = $(
-			`<div class="datepicker__input-label${
-				multi && " datepicker__input-label--multi"
-			}"></div>`
-		)
-		const displayDate = () => {
-			if (multi) {
-				this.$inputLabel.text(
-					`${
-						model.firstDate
-							? model.firstDate.format("DD MMM").replace(".", "")
-							: "Прибытие"
-					} - ${
-						model.lastDate
-							? model.lastDate.format("DD MMM").replace(".", "")
-							: "убытие"
-					}`
-				)
-			} else {
-				this.$inputLabel.text(
-					`${
-						model.dates[0]
-							? model.dates[0].format("DD.MM.YYYY")
-							: "ДД.ММ.ГГГГ"
-					}`
-				)
-			}
-		}
-		displayDate()
-		this.$inputArrow = $(`<div class="datepicker__input-arrow"></div>`)
 		this.$datepicker = $(`<div class="datepicker__datepicker"></div>`)
-		const flipMonth = (months: number) => {
-			this.setDate(this.date.add(months, "month"))
-			this.main.dates.rebuildMonth(this.date, displayDate)
-			this.nav.resetDisplay(this.date)
-		}
-		this.nav = new DatepickerNav(flipMonth, this.date)
-		this.main = new DatepickerMain(this.date, model, displayDate)
-		this.control = new DatepickerControl(model, displayDate)
-
-		this.$input.on({
-			click: (e) => {
-				this.switchDatepicker()
-			},
-			focusout: (e) => {
-				console.log(e.relatedTarget)
-				// this.switchDatepicker(false)
-			}
-		})
-
+		this.input = new DatepickerInput(this.switchDatepicker)
+		this.nav = new DatepickerNav(this.flipDate)
+		this.main = new DatepickerMain(this.update)
+		// this.control = new DatepickerControl()
 		this.$body.append(
-			this.$input.append(this.$inputLabel, this.$inputArrow),
+			this.input.render,
 			this.$datepicker.append(
-				this.nav.render(),
-				this.main.render(),
-				this.control.render()
+				this.nav.render,
+				this.main.render
+				// this.control.render
 			)
 		)
 	}
 
-	switchDatepicker(on?: boolean) {
+	private switchDatepicker = (on?: boolean) => {
 		switch (on) {
 			case true: {
 				!this.$datepicker.hasClass("datepicker__datepicker--open") &&
@@ -116,23 +67,95 @@ export class View {
 		}
 	}
 
-	setDate(date: Dayjs) {
-		this.date = date
+	flipDate = (
+		{ days = 0, months = 0, years = 0 }: FlipDateArgs,
+		newDate?: Dayjs
+	) => {
+		if (newDate) {
+			this.date = newDate
+		}
+		this.date = this.date.add(days, "day").add(months, "month").add(years, "year")
+
+		this.updateViews()
 	}
+
+	updateViews() {
+		this.nav.displayDate = this.date
+		this.main.dates.build(this.date)
+		this.update({ type: "getDates" })
+	}
+
+	setDate(dates: Dayjs | Dayjs[]) {
+		this.input.setDisplayDate(dates)
+		if (Array.isArray(dates)) {
+			DatepickerDate.refresh(dates)
+			return
+		}
+		DatepickerDate.refresh([dates])
+	}
+
+	private observers: ViewObserver[] = []
 
 	sub(o: ViewObserver) {
 		this.observers.push(o)
 	}
 
 	unsub(o: ViewObserver) {
-		this.observers.filter(ob => o !== ob)
+		this.observers.filter((ob) => o !== ob)
 	}
 
-	update(event: string, data: any) {
-		this.observers.forEach(o => o.update(event, data))
+	update = (options: any) => {
+		this.observers.forEach((o) => o.updateView(options))
 	}
 
-	render() {
+	get render() {
+		return this.$body
+	}
+}
+
+class DatepickerInput {
+	$body: JQuery
+	$label: JQuery
+	$display: JQuery
+	$arrow: JQuery
+
+	constructor(private switchDatepicker: (on?: boolean) => void) {
+		this.$body = $(`<div class="datepicker__input"></div>`).attr(
+			"tabindex",
+			0
+		)
+		this.$label = $(`<div class="datepicker__input-label"></div>`)
+		this.$display = $(`<div class="datepicker__input-display"></div>`)
+		this.$arrow = $(`<div class="datepicker__input-arrow"></div>`)
+
+		this.$body.on({
+			click: (e) => {
+				this.switchDatepicker()
+			},
+		})
+
+		this.$body.append(this.$display, this.$arrow)
+	}
+
+	set label(label: string) {
+		this.$label.text(label)
+	}
+
+	setDisplayDate(dates: Dayjs | Dayjs[]) {
+		if (Array.isArray(dates)) {
+			const firstDate = dates[0]
+				? dates[0].format("DD MMM").replace(".", "")
+				: "прибытие"
+			const lastDate = dates[1]
+				? dates[1].format("DD MMM").replace(".", "")
+				: "выезд"
+			this.$display.text(`${firstDate} - ${lastDate}`)
+			return
+		}
+		this.$display.text(`${dates.format("DD.MM.YYYY")}`)
+	}
+
+	get render() {
 		return this.$body
 	}
 }
@@ -143,7 +166,7 @@ class DatepickerNav {
 	$display: JQuery
 	$arrowForward: JQuery
 
-	constructor(flipMonth: (months: number) => void, displayDate: Dayjs) {
+	constructor(private flipDate: (options: FlipDateArgs) => void) {
 		this.$body = $(`<div class="datepicker__nav"></div>`)
 		this.$arrowBack = $(`<div class="datepicker__arrow">arrow_back</div>`)
 		this.$display = $(`<div class="datepicker__display"></div>`)
@@ -151,32 +174,25 @@ class DatepickerNav {
 			`<div class="datepicker__arrow">arrow_forward</div>`
 		)
 
-		this.resetDisplay(displayDate)
-
 		this.$arrowBack.on({
 			click: () => {
-				flipMonth(-1)
+				this.flipDate({ months: -1 })
 			},
 		})
-		// this.$display.on({
-		// 	click: () => {
-		// 		console.log("click ", this.$display)
-		// 	},
-		// })
 		this.$arrowForward.on({
 			click: () => {
-				flipMonth(1)
+				this.flipDate({ months: 1 })
 			},
 		})
 
 		this.$body.append(this.$arrowBack, this.$display, this.$arrowForward)
 	}
 
-	resetDisplay(date: Dayjs) {
+	set displayDate(date: Dayjs) {
 		this.$display.text(date.format("MMMM YYYY"))
 	}
 
-	render() {
+	get render() {
 		return this.$body
 	}
 }
@@ -186,15 +202,15 @@ class DatepickerMain {
 	week: DatepickerWeek
 	dates: DatepickerDates
 
-	constructor(date: Dayjs, model: DatepickerModel, displayDate: () => void) {
+	constructor(private update: (options: any) => void) {
 		this.$body = $(`<div class="datepicker__main"></div>`)
 		this.week = new DatepickerWeek()
-		this.dates = new DatepickerDates(date, model, displayDate)
+		this.dates = new DatepickerDates(this.update)
 
-		this.$body.append(this.week.render(), this.dates.render())
+		this.$body.append(this.week.render, this.dates.render)
 	}
 
-	render() {
+	get render() {
 		return this.$body
 	}
 }
@@ -212,7 +228,7 @@ class DatepickerWeek {
 		})
 	}
 
-	render() {
+	get render() {
 		return this.$body
 	}
 }
@@ -222,16 +238,12 @@ class DatepickerDates {
 	prevMonthDates: JQuery[] = []
 	currMonthDates: JQuery[] = []
 	nextMonthDates: JQuery[] = []
-	model: DatepickerModel
 
-	constructor(date: Dayjs, model: DatepickerModel, displayDates: () => void) {
+	constructor(private update: (options: any) => void) {
 		this.$body = $(`<div class="datepicker__dates"></div>`)
-		this.model = model
-
-		this.rebuildMonth(date, displayDates)
 	}
 
-	buildPrevMonthDates(currDate: Dayjs, displayDates: () => void) {
+	buildPrevMonthDates(currDate: Dayjs) {
 		this.prevMonthDates = []
 		const currMonthFirstWeekday = currDate.date(1).weekday()
 		const prevMonthLastDay = currDate.date(0).date()
@@ -239,34 +251,29 @@ class DatepickerDates {
 			const dateNum = prevMonthLastDay + 1 - i
 			this.prevMonthDates.push(
 				new DatepickerDate(
-					this.model,
 					currDate.subtract(1, "month").date(dateNum),
-					displayDates,
+					this.update,
 					true
-				).render()
+				).render
 			)
 		}
 
 		return this.prevMonthDates
 	}
 
-	buildCurrMonthDates(currDate: Dayjs, displayDates: () => void) {
+	buildCurrMonthDates(currDate: Dayjs) {
 		this.currMonthDates = []
 		const currMonthLastDay = currDate.add(1, "month").date(0).date()
 		for (let i = 1; i <= currMonthLastDay; i++) {
 			this.currMonthDates.push(
-				new DatepickerDate(
-					this.model,
-					currDate.date(i),
-					displayDates
-				).render()
+				new DatepickerDate(currDate.date(i), this.update).render
 			)
 		}
 
 		return this.currMonthDates
 	}
 
-	buildNextMonthDates(currDate: Dayjs, displayDates: () => void) {
+	buildNextMonthDates(currDate: Dayjs) {
 		this.nextMonthDates = []
 		const currMonthLastWeekday = currDate.add(1, "month").date(0).weekday()
 		const nextMonthDays = 7 - currMonthLastWeekday - 1
@@ -274,29 +281,28 @@ class DatepickerDates {
 		for (let i = 1; i <= nextMonthDays; i++) {
 			this.nextMonthDates.push(
 				new DatepickerDate(
-					this.model,
 					currDate.add(1, "month").date(i),
-					displayDates,
+					this.update,
 					true
-				).render()
+				).render
 			)
 		}
 
 		return this.nextMonthDates
 	}
 
-	rebuildMonth(date: Dayjs, displayDates: () => void) {
+	build(date: Dayjs) {
 		DatepickerDate.clear()
 		this.$body
 			.html("")
 			.append(
-				this.buildPrevMonthDates(date, displayDates),
-				this.buildCurrMonthDates(date, displayDates),
-				this.buildNextMonthDates(date, displayDates)
+				this.buildPrevMonthDates(date),
+				this.buildCurrMonthDates(date),
+				this.buildNextMonthDates(date)
 			)
 	}
 
-	render() {
+	get render() {
 		return this.$body
 	}
 }
@@ -308,26 +314,22 @@ class DatepickerDate {
 	$date: JQuery
 
 	constructor(
-		public model: DatepickerModel,
 		public date: Dayjs,
-		displayDates: () => void,
+		private update: (options: any) => void,
 		public other?: boolean
 	) {
 		if (!Array.isArray(DatepickerDate.instances)) {
-			DatepickerDate.instances = []
+			DatepickerDate.clear()
 		}
 		DatepickerDate.instances.push(this)
 
 		this.$body = $(`<div class="datepicker__cell"></div>`)
 
 		this.$date = $(`<div class="datepicker__date">${date.date()}</div>`)
-		this.resetClasses()
 
 		this.$body.on({
 			click: () => {
-				model.setDate(date)
-				DatepickerDate.refresh()
-				displayDates()
+				this.update({ type: "setDate", date: this.date })
 			},
 		})
 
@@ -338,22 +340,24 @@ class DatepickerDate {
 		DatepickerDate.instances = []
 	}
 
-	static refresh() {
-		DatepickerDate.instances.forEach((item) => {
-			item.resetClasses()
-		})
+	static refresh(dates?: Dayjs[]) {
+		if (Array.isArray(DatepickerDate.instances)) {
+			DatepickerDate.instances.forEach((item) => {
+				item.resetClasses(dates || [])
+			})
+		}
 	}
 
-	resetClasses() {
+	resetClasses(dates: Dayjs[]) {
 		this.$date.removeClass().addClass("datepicker__date")
 
-		const firstDateExists = typeof this.model.dates[0] !== "undefined"
-		const secondDateExists = typeof this.model.dates[1] !== "undefined"
+		const firstDateExists = typeof dates[0] !== "undefined"
+		const secondDateExists = typeof dates[1] !== "undefined"
 
 		const thisIsFirstDate =
-			firstDateExists && this.date.diff(this.model.dates[0], "day") === 0
+			firstDateExists && this.date.diff(dates[0], "day") === 0
 		const thisIsSecondDate =
-			secondDateExists && this.date.diff(this.model.dates[1], "day") === 0
+			secondDateExists && this.date.diff(dates[1], "day") === 0
 
 		if (thisIsFirstDate || thisIsSecondDate) {
 			this.$date.addClass("datepicker__date--selected")
@@ -367,71 +371,57 @@ class DatepickerDate {
 
 		if (firstDateExists && secondDateExists) {
 			if (
-				(thisIsFirstDate &&
-					this.model.dates[0].isBefore(this.model.dates[1])) ||
-				(thisIsSecondDate &&
-					this.model.dates[1].isBefore(this.model.dates[0]))
+				(thisIsFirstDate && dates[0].isBefore(dates[1])) ||
+				(thisIsSecondDate && dates[1].isBefore(dates[0]))
 			) {
 				this.$body.addClass("datepicker__cell--start")
 			} else if (
-				(thisIsFirstDate &&
-					this.model.dates[0].isAfter(this.model.dates[1])) ||
-				(thisIsSecondDate &&
-					this.model.dates[1].isAfter(this.model.dates[0]))
+				(thisIsFirstDate && dates[0].isAfter(dates[1])) ||
+				(thisIsSecondDate && dates[1].isAfter(dates[0]))
 			) {
 				this.$body.addClass("datepicker__cell--end")
 			} else if (
-				this.date.isBetween(
-					this.model.dates[0],
-					this.model.dates[1],
-					"date",
-					"()"
-				) ||
-				this.date.isBetween(
-					this.model.dates[1],
-					this.model.dates[0],
-					"date",
-					"()"
-				)
+				this.date.isBetween(dates[0], dates[1], "date", "()") ||
+				this.date.isBetween(dates[1], dates[0], "date", "()")
 			) {
 				this.$body.addClass("datepicker__cell--middle")
 			}
 		}
 	}
 
-	render() {
+	get render() {
 		return this.$body
 	}
 }
 
-class DatepickerControl {
-	$body: JQuery
-	$clear: JQuery
-	$accept: JQuery
+// class DatepickerControl {
+// 	$body: JQuery
+// 	$clear: JQuery
+// 	$accept: JQuery
 
-	constructor(model: DatepickerModel, displayDate: () => void) {
-		this.$body = $(`<div class="datepicker__control"></div>`)
-		this.$clear = $(`<h3 class="datepicker__button">Очистить</h3>`)
-		this.$accept = $(`<h3 class="datepicker__button">Применить</h3>`)
+// 	constructor(model: DatepickerModel, displayDate: () => void) {
+// 		this.$body = $(`<div class="datepicker__control"></div>`)
+// 		this.$clear = $(`<h3 class="datepicker__button">Очистить</h3>`)
+// 		this.$accept = $(`<h3 class="datepicker__button">Применить</h3>`)
 
-		this.$clear.on({
-			click: () => {
-				model.resetDates()
-				DatepickerDate.refresh()
-				displayDate()
-			},
-		})
+// 		this.$clear.on({
+// 			click: () => {
+// 				model.resetDates()
+// 				DatepickerDate.refresh()
+// 				displayDate()
+// 			},
+// 		})
 
-		this.$accept.on({
-			click: () => {
-				console.log("accepted")
-			},
-		})
+// 		this.$accept.on({
+// 			click: () => {
+// 				console.log("accepted")
+// 			},
+// 		})
 
-		this.$body.append(this.$clear, this.$accept)
-	}
+// 		this.$body.append(this.$clear, this.$accept)
+// 	}
 
-	render() {
-		return this.$body
-	}
-}
+// 	render() {
+// 		return this.$body
+// 	}
+// }

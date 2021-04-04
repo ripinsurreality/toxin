@@ -1,32 +1,46 @@
 import { Dayjs } from "dayjs"
 
-export interface ModelObserver {
-	update(model: Model): void
+interface ModelObserver {
+	updateModel(options: any): void
 }
 
 export class Model {
-	// private dates: Dayjs[] = []
+	dates: Dayjs[] = []
 	private lastSetDate: number = 0
-	private observers: ModelObserver[] = []
+	multi: boolean = false
 
-	constructor(private multi?: boolean) {}
+	constructor() {}
 
 	resetDates() {
 		this.dates = []
 	}
 
 	set date(date: Dayjs) {
-		this.dates[this.lastSetDate] = date
 		if (this.multi) {
+			this.dates[this.lastSetDate] = date
 			this.lastSetDate = this.lastSetDate === 0 ? 1 : 0
+			this.update({
+				type: "setDates",
+				dates: this.dates
+			})
+			return
 		}
-		this.update()
+
+		this.dates[0] = date
+		this.update({
+			type: "setDates",
+			date: this.dates[0]
+		})
+
 	}
 
-	set dates(dates: Dayjs[]) {
+	setDates(dates: Dayjs[]) {
 		if (dates.length === 2) {
 			this.dates = dates
-			this.update()
+			this.update({
+				type: "setDates",
+				dates
+			})
 		} else {
 			throw new Error("dates should be an array of 2 Dayjs objects")
 		}
@@ -47,6 +61,8 @@ export class Model {
 				Math.max(...this.dates.map((date) => date.valueOf()))
 		)[0]
 	}
+	
+	private observers: ModelObserver[] = []
 
 	sub(o: ModelObserver) {
 		this.observers.push(o)
@@ -56,7 +72,7 @@ export class Model {
 		this.observers.filter(ob => o !== ob)
 	}
 
-	update() {
-		this.observers.forEach(o => o.update(this))
+	update(options: any) {
+		this.observers.forEach(o => o.updateModel(options))
 	}
 }
