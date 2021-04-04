@@ -26,6 +26,7 @@ import dayjs from "dayjs"
 		$(".dropdown-1").dropdown("comfort", [-1, 3])
 
 		$(".dtpckr").datepicker({ multi: true })
+		$(".dtpckr2").datepicker()
 
 		// $(".finder__datepicker").datepicker({ multi: true })
 		$(".finder__dropdown").dropdown("guests")

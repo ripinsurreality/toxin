@@ -74,7 +74,10 @@ export class View {
 		if (newDate) {
 			this.date = newDate
 		}
-		this.date = this.date.add(days, "day").add(months, "month").add(years, "year")
+		this.date = this.date
+			.add(days, "day")
+			.add(months, "month")
+			.add(years, "year")
 
 		this.updateViews()
 	}
@@ -85,13 +88,9 @@ export class View {
 		this.update({ type: "getDates" })
 	}
 
-	setDate(dates: Dayjs | Dayjs[]) {
-		this.input.setDisplayDate(dates)
-		if (Array.isArray(dates)) {
-			DatepickerDate.refresh(dates)
-			return
-		}
-		DatepickerDate.refresh([dates])
+	setDate(dates: Dayjs[], multi?: boolean) {
+		this.input.setDisplayDate(dates, multi)
+		this.main.dates.refresh(dates)
 	}
 
 	private observers: ViewObserver[] = []
@@ -141,8 +140,8 @@ class DatepickerInput {
 		this.$label.text(label)
 	}
 
-	setDisplayDate(dates: Dayjs | Dayjs[]) {
-		if (Array.isArray(dates)) {
+	setDisplayDate(dates: Dayjs[], multi?: boolean) {
+		if (multi) {
 			const firstDate = dates[0]
 				? dates[0].format("DD MMM").replace(".", "")
 				: "прибытие"
@@ -152,7 +151,9 @@ class DatepickerInput {
 			this.$display.text(`${firstDate} - ${lastDate}`)
 			return
 		}
-		this.$display.text(`${dates.format("DD.MM.YYYY")}`)
+		this.$display.text(
+			`${dates[0] ? dates[0].format("DD.MM.YYYY") : "ДД.ММ.ГГГГ"}`
+		)
 	}
 
 	get render() {
@@ -235,71 +236,65 @@ class DatepickerWeek {
 
 class DatepickerDates {
 	$body: JQuery
-	prevMonthDates: JQuery[] = []
-	currMonthDates: JQuery[] = []
-	nextMonthDates: JQuery[] = []
+	dates: DatepickerDate[] = []
 
 	constructor(private update: (options: any) => void) {
 		this.$body = $(`<div class="datepicker__dates"></div>`)
 	}
 
 	buildPrevMonthDates(currDate: Dayjs) {
-		this.prevMonthDates = []
 		const currMonthFirstWeekday = currDate.date(1).weekday()
 		const prevMonthLastDay = currDate.date(0).date()
 		for (let i = currMonthFirstWeekday; i >= 1; i--) {
 			const dateNum = prevMonthLastDay + 1 - i
-			this.prevMonthDates.push(
+			this.dates.push(
 				new DatepickerDate(
 					currDate.subtract(1, "month").date(dateNum),
 					this.update,
 					true
-				).render
+				)
 			)
 		}
-
-		return this.prevMonthDates
 	}
 
 	buildCurrMonthDates(currDate: Dayjs) {
-		this.currMonthDates = []
 		const currMonthLastDay = currDate.add(1, "month").date(0).date()
 		for (let i = 1; i <= currMonthLastDay; i++) {
-			this.currMonthDates.push(
-				new DatepickerDate(currDate.date(i), this.update).render
+			this.dates.push(
+				new DatepickerDate(currDate.date(i), this.update)
 			)
 		}
-
-		return this.currMonthDates
 	}
 
 	buildNextMonthDates(currDate: Dayjs) {
-		this.nextMonthDates = []
 		const currMonthLastWeekday = currDate.add(1, "month").date(0).weekday()
 		const nextMonthDays = 7 - currMonthLastWeekday - 1
 
 		for (let i = 1; i <= nextMonthDays; i++) {
-			this.nextMonthDates.push(
+			this.dates.push(
 				new DatepickerDate(
 					currDate.add(1, "month").date(i),
 					this.update,
 					true
-				).render
+				)
 			)
 		}
+	}
 
-		return this.nextMonthDates
+	refresh(dates?: Dayjs[]) {
+		this.dates.forEach(date => date.resetClasses(dates || []))
+	}
+
+	get renderDates() {
+		return this.dates.map(date => date.render)
 	}
 
 	build(date: Dayjs) {
-		DatepickerDate.clear()
-		this.$body
-			.html("")
-			.append(
-				this.buildPrevMonthDates(date),
-				this.buildCurrMonthDates(date),
-				this.buildNextMonthDates(date)
-			)
+		this.dates = []
+		this.buildPrevMonthDates(date)
+		this.buildCurrMonthDates(date)
+		this.buildNextMonthDates(date)
+		this.$body.html("").append(this.renderDates)
 	}
 
 	get render() {
@@ -308,7 +303,6 @@ class DatepickerDates {
 }
 
 class DatepickerDate {
-	static instances: DatepickerDate[]
 
 	$body: JQuery
 	$date: JQuery
@@ -318,10 +312,6 @@ class DatepickerDate {
 		private update: (options: any) => void,
 		public other?: boolean
 	) {
-		if (!Array.isArray(DatepickerDate.instances)) {
-			DatepickerDate.clear()
-		}
-		DatepickerDate.instances.push(this)
 
 		this.$body = $(`<div class="datepicker__cell"></div>`)
 
@@ -334,18 +324,6 @@ class DatepickerDate {
 		})
 
 		this.$body.append(this.$date)
-	}
-
-	static clear() {
-		DatepickerDate.instances = []
-	}
-
-	static refresh(dates?: Dayjs[]) {
-		if (Array.isArray(DatepickerDate.instances)) {
-			DatepickerDate.instances.forEach((item) => {
-				item.resetClasses(dates || [])
-			})
-		}
 	}
 
 	resetClasses(dates: Dayjs[]) {

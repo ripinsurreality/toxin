@@ -19,28 +19,25 @@ export class Model {
 		if (this.multi) {
 			this.dates[this.lastSetDate] = date
 			this.lastSetDate = this.lastSetDate === 0 ? 1 : 0
-			this.update({
-				type: "setDates",
-				dates: this.dates
-			})
+			this.getDates()
 			return
 		}
-
 		this.dates[0] = date
-		this.update({
-			type: "setDates",
-			date: this.dates[0]
-		})
+		this.getDates()
+	}
 
+	getDates() {
+		this.update({
+			type: "getDates",
+			dates: this.dates,
+			multi: this.multi
+		})
 	}
 
 	setDates(dates: Dayjs[]) {
 		if (dates.length === 2) {
 			this.dates = dates
-			this.update({
-				type: "setDates",
-				dates
-			})
+			this.getDates()
 		} else {
 			throw new Error("dates should be an array of 2 Dayjs objects")
 		}
