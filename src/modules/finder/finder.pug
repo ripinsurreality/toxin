@@ -3,7 +3,13 @@ include /modules/button/button
 mixin finder()
 	.finder 
 		h1.finder__title Найдём номера под ваши пожелания
-		.finder__datepicker 
+		.finder__dates 
+			.finder__date
+				h3.finder__arrival-label Прибытие
+				.finder__arrival-datepicker
+			.finder__date
+				h3.finder__departure-label Выезд
+				.finder__departure-datepicker
 		.finder__dropdown
 		.finder__button 
 			+button("arrow", "подобрать номер")

@@ -28,7 +28,8 @@ import dayjs from "dayjs"
 		$(".dtpckr").datepicker({ multi: true })
 		$(".dtpckr2").datepicker()
 
-		// $(".finder__datepicker").datepicker({ multi: true })
+		$(".finder__arrival-datepicker").datepicker()
+		$(".finder__departure-datepicker").datepicker()
 		$(".finder__dropdown").dropdown("guests")
 
 		// $(".room__datepicker").datepicker({ multi: true })
