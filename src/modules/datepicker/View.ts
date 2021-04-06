@@ -27,7 +27,7 @@ export class View {
 	input: DatepickerInput
 	nav: DatepickerNav
 	main: DatepickerMain
-	// control: DatepickerControl
+	control: DatepickerControl
 
 	private date = dayjs()
 
@@ -37,13 +37,13 @@ export class View {
 		this.input = new DatepickerInput(this.switchDatepicker)
 		this.nav = new DatepickerNav(this.flipDate)
 		this.main = new DatepickerMain(this.update)
-		// this.control = new DatepickerControl()
+		this.control = new DatepickerControl(this.update, this.switchDatepicker)
 		this.$body.append(
 			this.input.render,
 			this.$datepicker.append(
 				this.nav.render,
-				this.main.render
-				// this.control.render
+				this.main.render,
+				this.control.render
 			)
 		)
 	}
@@ -372,34 +372,34 @@ class DatepickerDate {
 	}
 }
 
-// class DatepickerControl {
-// 	$body: JQuery
-// 	$clear: JQuery
-// 	$accept: JQuery
+class DatepickerControl {
+	$body: JQuery
+	$clear: JQuery
+	$accept: JQuery
 
-// 	constructor(model: DatepickerModel, displayDate: () => void) {
-// 		this.$body = $(`<div class="datepicker__control"></div>`)
-// 		this.$clear = $(`<h3 class="datepicker__button">Очистить</h3>`)
-// 		this.$accept = $(`<h3 class="datepicker__button">Применить</h3>`)
+	constructor(private update: (options: any) => void, private switchDatepicker: (on?: boolean) => void) {
+		this.$body = $(`<div class="datepicker__control"></div>`)
+		this.$clear = $(`<h3 class="datepicker__button">Очистить</h3>`)
+		this.$accept = $(`<h3 class="datepicker__button">Применить</h3>`)
 
-// 		this.$clear.on({
-// 			click: () => {
-// 				model.resetDates()
-// 				DatepickerDate.refresh()
-// 				displayDate()
-// 			},
-// 		})
+		this.$clear.on({
+			click: () => {
+				this.update({
+					type: "resetDates"
+				})
+			},
+		})
 
-// 		this.$accept.on({
-// 			click: () => {
-// 				console.log("accepted")
-// 			},
-// 		})
+		this.$accept.on({
+			click: () => {
+				this.switchDatepicker(false)
+			},
+		})
 
-// 		this.$body.append(this.$clear, this.$accept)
-// 	}
+		this.$body.append(this.$clear, this.$accept)
+	}
 
-// 	render() {
-// 		return this.$body
-// 	}
-// }
+	get render() {
+		return this.$body
+	}
+}

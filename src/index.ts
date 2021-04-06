@@ -32,6 +32,9 @@ import dayjs from "dayjs"
 		$(".finder__departure-datepicker").datepicker()
 		$(".finder__dropdown").dropdown("guests")
 
+		$(".search__dates-datepicker").datepicker({ multi: true })
+		$(".search__comfort-dropdown").dropdown("comfort")
+
 		// $(".room__datepicker").datepicker({ multi: true })
 		$(".room__dropdown").dropdown("comfort")
 

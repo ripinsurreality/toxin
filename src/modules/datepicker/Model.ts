@@ -5,7 +5,7 @@ interface ModelObserver {
 }
 
 export class Model {
-	dates: Dayjs[] = []
+	private dates: Dayjs[] = []
 	private lastSetDate: number = 0
 	multi: boolean = false
 
@@ -29,34 +29,23 @@ export class Model {
 	getDates() {
 		this.update({
 			type: "getDates",
-			dates: this.dates,
+			dates: this.datesInOrder,
 			multi: this.multi
 		})
 	}
 
 	setDates(dates: Dayjs[]) {
-		if (dates.length === 2) {
+		if (dates.length <= 2) {
 			this.dates = dates
+			this.lastSetDate = 0
 			this.getDates()
 		} else {
-			throw new Error("dates should be an array of 2 Dayjs objects")
+			throw new Error("dates should be an array of up to 2 Dayjs objects")
 		}
 	}
 
-	get firstDate() {
-		return this.dates.filter(
-			(i) =>
-				i.valueOf() ===
-				Math.min(...this.dates.map((date) => date.valueOf()))
-		)[0]
-	}
-
-	get lastDate() {
-		return this.dates.filter(
-			(i) =>
-				i.valueOf() ===
-				Math.max(...this.dates.map((date) => date.valueOf()))
-		)[0]
+	get datesInOrder() {
+		return this.dates.sort((a, b) => (a.valueOf() - b.valueOf()))
 	}
 	
 	private observers: ModelObserver[] = []

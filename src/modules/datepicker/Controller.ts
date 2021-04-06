@@ -33,6 +33,9 @@ export class Controller {
 		if (options.type === "getDates") {
 			this.model.getDates()
 		}
+		if (options.type === "resetDates") {
+			this.model.setDates([])
+		}
 	}
 
 	get render() {

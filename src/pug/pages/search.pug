@@ -7,7 +7,9 @@ include /modules/pagination/pagination
 block content
 	.search
 		.search__filters 
-			.search__datepicker 
+			.search__dates 
+				h3.search__dates-label даты пребывания в отеле
+				.search__dates-datepicker
 			.search__guests 
 			.search__price-slider 
 			.search__rules 
@@ -26,9 +28,9 @@ block content
 						+rich-checkbox("Широкий коридор", "Ширина коридоров в номере не менее 91 см.")
 					li.search__list-item
 						+rich-checkbox("Помощник для инвалидов", "На 1 этаже вас встретит специалист  и проводит до номера.")
-			.search__availability 
-				h3 удобства номера
 			.search__comfort 
+				h3.search__comfort-label удобства номера
+				.search__comfort-dropdown
 			.search__extra 
 				+expandable-checkbox-list("дополнительные удобства", "Завтрак", "Письменный стол", "Стул для кормления", "Кроватка", "Телевизор", "Шампунь")
 
