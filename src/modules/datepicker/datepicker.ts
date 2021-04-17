@@ -2,9 +2,7 @@ import { Model } from "./Model"
 import { View } from "./View"
 import { Controller } from "./Controller"
 ;(function ($) {
-	$.fn.datepicker = function (
-		{ date, multi } = { date: undefined, multi: undefined }
-	) {
+	$.fn.datepicker = function ({ date, multi }: DatepickerProps) {
 		const model = new Model()
 		const view = new View()
 		const controller = new Controller(model, view, date, multi)

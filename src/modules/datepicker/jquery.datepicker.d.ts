@@ -4,5 +4,5 @@ interface DatepickerProps {
 }
 
 interface JQuery {
-	datepicker({}?: DatepickerProps): JQuery
+	datepicker(props?: DatepickerProps): JQuery
 }
