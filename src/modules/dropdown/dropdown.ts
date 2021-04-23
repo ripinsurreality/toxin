@@ -1,6 +1,8 @@
 import { DropdownView } from "./dropdownView"
 import { DropdownModel } from "./dropdownModel"
 import { DropdownController } from "./dropdownController"
+import "./dropdown.sass"
+
 ;(function ($) {
 	$.fn.dropdown = function (type, values) {
 		const model = new DropdownModel()

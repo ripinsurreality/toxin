@@ -20,10 +20,9 @@ const PATHS = {
 	assets: "assets",
 }
 
-const PAGES_DIR = `${PATHS.src}/pug/pages/`
-const PAGES = fs
-	.readdirSync(PAGES_DIR)
-	.filter((filename) => filename.endsWith(".pug"))
+const PAGES_DIR = `${PATHS.src}/pages/`
+const PAGES = fs.readdirSync(PAGES_DIR)
+const PAGES_TS = Object.fromEntries(new Map(PAGES.map(page => [page, `${PAGES_DIR}/${page}`])))
 
 const optimization = () => {
 	const config = {
@@ -56,7 +55,7 @@ const babelOptions = (preset) => {
 
 module.exports = {
 	mode: "development",
-	entry: PATHS.src,
+	entry: PAGES_TS,
 	output: {
 		filename: fileName("js"),
 		path: PATHS.dist,
@@ -84,13 +83,11 @@ module.exports = {
 		// 	]
 		// }),
 		/* each pug page is turned into an html page */
-		...PAGES.map(
-			(page) =>
-				new HTMLWebpackPlugin({
-					template: `${PAGES_DIR}/${page}`,
-					filename: `./${page.replace(/\.pug/, ".html")}`,
-				})
-		),
+		...PAGES.map(page => new HTMLWebpackPlugin({
+			template: `${PAGES_DIR}/${page}/index.pug`,
+			filename: `${page}/index.html`,
+			// chunks: [`${page}`]
+		})),
 		new webpack.ProvidePlugin({
 			$: "jquery",
 			jQuery: "jquery",
