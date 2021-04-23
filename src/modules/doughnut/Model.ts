@@ -29,9 +29,9 @@ export class DoughnutModel {
 	}
 
 	get sum() {
-		return this._items
-			.map((i) => i.value)
-			.reduce((prev, curr) => prev + curr)
+		const values = this._items.map((i) => i.value)
+		return values.length > 0 ? values
+			.reduce((prev, curr) => prev + curr) : 0
 	}
 
 	setTotalName(totalNames: [string, string, string]) {

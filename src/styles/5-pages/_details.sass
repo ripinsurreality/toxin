@@ -33,39 +33,6 @@
 		display: flex
 		justify-content: space-between
 
-	&__circle
-		display: flex
-		align-items: end
-		gap: 30px
-
-	&__color
-		display: flex
-		align-items: center
-		gap: 5px
-
-		&::before
-			content: ""
-			width: 10px
-			height: 10px
-			border-radius: 10px
-
-		&--orange
-			&::before
-				background: linear-gradient(180deg, #FFE39C 0%, #FFBA9C 100%)
-
-		&--green
-			&::before
-				background: $secondary-gradient
-
-		&--blue
-			&::before
-				background: $primary-gradient
-
-		&--black
-			&::before
-				background: linear-gradient(180deg, #919191 0%, #3D4975 100%)
-
-
 
 .showcase
 	display: flex

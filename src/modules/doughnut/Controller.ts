@@ -10,6 +10,8 @@ export class DoughnutController {
 		this.model.sub(this)
 		this.view.sub(this)
 
+		this.model.setTotalName(["голос", "голоса", "голосов"])
+
 		items.forEach((item) => {
 			this.model.addItem(item)
 		})
@@ -26,9 +28,15 @@ export class DoughnutController {
 				options.color,
 				this.model.sum
 			)
-			this.view.draw()
+			this.view.list.addItem(options.title, options.color)
+			this.view.number.title = this.model.title
+			this.view.number.number = String(this.model.sum)
 		}
 	}
 
-	updateView: UpdateDoughnutView = (options) => {}
+	updateView: UpdateDoughnutView = (options) => {
+		if (options.type === "view") {
+			this.view.draw()
+		}
+	}
 }
