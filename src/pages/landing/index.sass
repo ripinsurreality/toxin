@@ -2,10 +2,12 @@
 @import "@modules/finder/finder"
 	
 .hero
-	height: 100vh
+	height: calc(100vh - 70px)
 	width: 100%
 	position: relative
-	background: pink
+	background: no-repeat url("@img/hero.png")
+	background-size: cover
+	background-position-y: bottom
 
 	&__finder
 		position: absolute

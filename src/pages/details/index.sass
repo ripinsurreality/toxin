@@ -3,7 +3,7 @@
 @import "@modules/comment/comment"
 @import "@modules/room/room"
 @import "@modules/bullet-list/bullet-list"
-	
+
 .details
 	width: 80%
 	margin: 70px auto
@@ -39,14 +39,13 @@
 		display: flex
 		justify-content: space-between
 
-
 .showcase
 	display: flex
 	height: 485px
 
 	&__main
 		width: 60%
-		background: darkgray
+		background: url("@img/details1.png") no-repeat center / cover
 
 	&__aside
 		display: flex
@@ -56,6 +55,8 @@
 
 	&__pic
 		height: 50%
-		background: gray
 
-	
+		&--1
+			background: url("@img/details2.png") no-repeat center / cover
+		&--2
+			background: url("@img/details3.png") no-repeat center / cover
