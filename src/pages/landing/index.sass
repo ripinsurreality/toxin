@@ -1,13 +1,11 @@
-@import "@/styles/styles"
-@import "@modules/finder/finder"
-	
+@use "@/styles/styles" as *
+@use "@modules/finder/finder" as *
+
 .hero
 	height: calc(100vh - 70px)
 	width: 100%
 	position: relative
-	background: no-repeat url("@img/hero.png")
-	background-size: cover
-	background-position-y: bottom
+	background: bottom / cover no-repeat url("@img/hero.png")
 
 	&__finder
 		position: absolute
