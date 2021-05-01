@@ -3,7 +3,7 @@ include /modules/rate/rate
 mixin card(number, price, extra, reviews, image)
 	.card
 		.card__images 
-			img(src=require(`@img/search1.png`), alt="room image").card__image 
+			img(src=require(`@img/${image}`), alt="room image").card__image 
 			.card__arrows 
 				.card__arrow-wrapper-left
 					.card__arrow-left expand_more
