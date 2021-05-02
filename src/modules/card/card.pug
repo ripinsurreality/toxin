@@ -19,7 +19,7 @@ mixin card(number, price, extra, reviews, image)
 				.card__title №&nbsp;
 					.card__number #{number}
 					if extra
-						.card__extra люкс
+						.card__lux люкс
 				- const priceParsed = price ? price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") : "0"
 				.card__price #[b #{priceParsed}₽] в сутки
 			.card__label-bottom
