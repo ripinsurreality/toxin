@@ -23,8 +23,24 @@ export class View {
 		this._images.addImage(image)
 	}
 
-	setImage(index: number) {
-		this._images.setImage(index)
+	set displayImage(index: number) {
+		this._images.displayImage = index
+	}
+
+	set lux(lux: boolean) {
+		this._label.lux = lux
+	}
+
+	set number(number: string) {
+		this._label.number = number
+	}
+
+	set price(price: string) {
+		this._label.price = price
+	}
+
+	set reviews(reviews: number) {
+		this._label.reviews = reviews
 	}
 
 	private observers: ViewObserver[] = []
@@ -34,11 +50,11 @@ export class View {
 	}
 
 	unsub(o: ViewObserver) {
-		this.observers.filter(ob => o !== ob)
+		this.observers.filter((ob) => o !== ob)
 	}
 
 	update: ViewUpdateFunction = (options) => {
-		this.observers.forEach(o => o.updateView(options))
+		this.observers.forEach((o) => o.updateView(options))
 	}
 
 	get render() {
@@ -51,7 +67,7 @@ class Images {
 	private $image: JQuery
 	private _arrows: Arrows
 	private _images: string[] = []
-	private _currentImageIndex: number = 0
+	private _displayImageIndex: number = 0
 	private _balls: Balls
 
 	constructor() {
@@ -68,16 +84,20 @@ class Images {
 			return
 		}
 		this._images.push(image)
+		this.resetImage()
 		this._balls.addBall()
 	}
 
-	setImage(index: number) {
-		this._currentImageIndex = index > this._images.length - 1 ? 0 : index
+	set displayImage(index: number) {
+		this._displayImageIndex = index > this._images.length - 1 ? 0 : index
 		this.resetImage()
 	}
 
 	private resetImage() {
-		this.$image.attr("src", `@img/${this._images[this._currentImageIndex]}.png`)
+		this.$image.attr(
+			"src",
+			`@img/${this._images[this._displayImageIndex]}`
+		)
 	}
 
 	get render() {
@@ -86,11 +106,11 @@ class Images {
 }
 
 class Arrows {
-	$body: JQuery
-	$arrowWrapperLeft: JQuery
-	$arrowWrapperRight: JQuery
-	$arrowLeft: JQuery
-	$arrowRight: JQuery
+	private $body: JQuery
+	private $arrowWrapperLeft: JQuery
+	private $arrowWrapperRight: JQuery
+	private $arrowLeft: JQuery
+	private $arrowRight: JQuery
 
 	constructor() {
 		this.$body = $(`<div class="card__arrows"></div>`)
@@ -129,7 +149,7 @@ class Balls {
 }
 
 class Ball {
-	$body: JQuery
+	private $body: JQuery
 	private _current: boolean = false
 
 	constructor() {
@@ -152,16 +172,18 @@ class Ball {
 }
 
 class Label {
-	$body: JQuery
-	$top: JQuery
-	$title: JQuery
-	$number: JQuery
-	$lux: JQuery
-	$price: JQuery
+	private $body: JQuery
+	private $top: JQuery
+	private $title: JQuery
+	private $number: JQuery
+	private $lux: JQuery
+	private $priceWrapper: JQuery
+	private $price: JQuery
 
-	$bottom: JQuery
-	// rating: Rating
-	$reviews: JQuery
+	private $bottom: JQuery
+	// private rating: Rating
+	private $reviewsWrapper: JQuery
+	private $reviews: JQuery
 
 	constructor() {
 		this.$body = $(`<div class="card__label"></div>`)
@@ -169,18 +191,42 @@ class Label {
 		this.$title = $(`<div class="card__title">№&nbsp;</div>`)
 		this.$number = $(`<div class="card__number"></div>`)
 		this.$lux = $(`<div class="card__lux"></div>`)
+		this.$priceWrapper = $(
+			`<div class="card__price-wrapper"> в сутки</div>`
+		)
 		this.$price = $(`<div class="card__price"></div>`)
 
 		this.$bottom = $(`<div class="card__label-bottom"></div>`)
+		this.$reviewsWrapper = $(`<div class="card__reviews-wrapper"> отзывов</div>`)
 		this.$reviews = $(`<div class="card__reviews"></div>`)
 
 		this.$body.append(
 			this.$top.append(
 				this.$title.append(this.$number, this.$lux),
-				this.$price
+				this.$priceWrapper.prepend(this.$price)
 			),
-			this.$bottom.append(this.$reviews)
+			this.$bottom.append(this.$reviewsWrapper.prepend(this.$reviews))
 		)
+	}
+
+	set lux(lux: boolean) {
+		if (lux) {
+			this.$lux.html("&nbsp;люкс")
+			return
+		}
+		this.$lux.text("")
+	}
+
+	set number(number: string) {
+		this.$number.text(number)
+	}
+
+	set price(price: string) {
+		this.$price.text(`${price}₽`)
+	}
+
+	set reviews(reviews: number) {
+		this.$reviews.text(String(reviews))
 	}
 
 	get render() {

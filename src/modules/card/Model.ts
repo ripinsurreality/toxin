@@ -2,46 +2,80 @@ interface ModelObserver {
 	updateModel: ModelUpdateFunction
 }
 
-type ModelUpdateFunctionProps = {}
+type ModelUpdateFunctionProps = {
+	type: "number"
+	number: string
+} | {
+	type: "price"
+	price: string
+} | {
+	type: "lux"
+	lux: boolean
+} | {
+	type: "reviews"
+	reviews: number
+} | {
+	type: "image"
+	image: string
+}
 
 export type ModelUpdateFunction = (options: ModelUpdateFunctionProps) => void
 
 export class Model {
-	_number: string
-	_price: number
-	_lux: boolean
-	_reviews: number
-	_image: string
+	private _number: string = ""
+	private _price: number = 0
+	private _lux: boolean = false
+	private _reviews: number = 0
+	private _images: string[] = []
 
 	set number(number: string) {
 		this._number = number
+		this.update({
+			type: "number",
+			number: this._number
+		})
 	}
 
-	get number() {
-		return this._number
-	}
-
-	set price(price: number | string) {
+	set priceNumber(price: number | string) {
 		if (typeof price === "string") {
 			price = parseInt(price, 10)
 		}
 		this._price = price
+		this.update({
+			type: "price",
+			price: this.price
+		})
 	}
 
-	get price() {
-		return String(this._price).replace(/\B(?=(\d{3})+(?!\d))/g, " ")
-	}
-
-	set lux(lux: boolean) {
+	set lux(lux: boolean | undefined) {
+		if (typeof lux === "undefined") {
+			lux = false
+		}
 		this._lux = lux
+		this.update({
+			type: "lux",
+			lux: this._lux
+		})
 	}
 
 	set reviews(reviews: number) {
 		this._reviews = reviews
+		this.update({
+			type: "reviews",
+			reviews: this._reviews
+		})
 	}
 
-	set image(image: string) {
-		this._image = image
+	addImage(image: string) {
+		this._images.push(image)
+		this.update({
+			type: "image",
+			image
+		})
+	}
+
+	get price(): string {
+		return String(this._price).replace(/\B(?=(\d{3})+(?!\d))/g, " ")
 	}
 
 	private observers: ModelObserver[] = []
