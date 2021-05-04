@@ -75,6 +75,8 @@ class Images {
 		this.$image = $(`<img class="card__image" alt="room image"></img>`)
 		this._arrows = new Arrows()
 		this._balls = new Balls()
+		this._arrows.hide()
+		this._balls.hide()
 
 		this.$body.append(this.$image, this._arrows.render, this._balls.render)
 	}
@@ -84,19 +86,25 @@ class Images {
 			return
 		}
 		this._images.push(image)
-		this.resetImage()
 		this._balls.addBall()
+		this.displayImage = 0
+		if (this._images.length > 1) {
+			this._arrows.show()
+			this._balls.show()
+		}
 	}
 
 	set displayImage(index: number) {
+		const prevIndex = this._displayImageIndex
 		this._displayImageIndex = index > this._images.length - 1 ? 0 : index
+		this._balls.setBallActive(prevIndex, this._displayImageIndex)
 		this.resetImage()
 	}
 
 	private resetImage() {
 		this.$image.attr(
 			"src",
-			`@img/${this._images[this._displayImageIndex]}`
+			`../assets/img/${this._images[this._displayImageIndex]}`
 		)
 	}
 
@@ -122,6 +130,19 @@ class Arrows {
 			`<div class="card__arrow-wrapper-right"></div>`
 		)
 		this.$arrowRight = $(`<div class="card__arrow-right">expand_more</div>`)
+
+		this.$body.append(
+			this.$arrowWrapperLeft.append(this.$arrowLeft),
+			this.$arrowWrapperRight.append(this.$arrowRight)
+		)
+	}
+
+	hide() {
+		this.$body.hide()
+	}
+
+	show() {
+		this.$body.show()
 	}
 
 	get render() {
@@ -141,6 +162,19 @@ class Balls {
 		const newBall = new Ball()
 		this._balls.push(newBall)
 		this.$body.append(newBall.render)
+	}
+
+	setBallActive(prevIndex: number, index: number) {
+		this._balls[prevIndex].current = false
+		this._balls[index].current = true
+	}
+
+	hide() {
+		this.$body.hide()
+	}
+
+	show() {
+		this.$body.show()
 	}
 
 	get render() {
@@ -197,7 +231,9 @@ class Label {
 		this.$price = $(`<div class="card__price"></div>`)
 
 		this.$bottom = $(`<div class="card__label-bottom"></div>`)
-		this.$reviewsWrapper = $(`<div class="card__reviews-wrapper"> отзывов</div>`)
+		this.$reviewsWrapper = $(
+			`<div class="card__reviews-wrapper"> отзывов</div>`
+		)
 		this.$reviews = $(`<div class="card__reviews"></div>`)
 
 		this.$body.append(

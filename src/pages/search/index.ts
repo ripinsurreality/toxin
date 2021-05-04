@@ -99,7 +99,7 @@ import "@modules/card/card"
 			price: 9900,
 			lux: true,
 			reviews: 145,
-			images: ["search1.png"],
+			images: ["search1.png",/*  "search2.png" */],
 		})
 		$(".search__dates").datepicker({ multi: true })
 	})
