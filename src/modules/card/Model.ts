@@ -17,6 +17,9 @@ type ModelUpdateFunctionProps = {
 } | {
 	type: "image"
 	image: string
+} | {
+	type: "rating"
+	rating: Rating
 }
 
 export type ModelUpdateFunction = (options: ModelUpdateFunctionProps) => void
@@ -26,6 +29,7 @@ export class Model {
 	private _price: number = 0
 	private _lux: boolean = false
 	private _reviews: number = 0
+	private _rating: Rating
 	private _images: string[] = []
 
 	set number(number: string) {
@@ -63,6 +67,14 @@ export class Model {
 		this.update({
 			type: "reviews",
 			reviews: this._reviews
+		})
+	}
+
+	set rating(rating: Rating) {
+		this._rating = rating
+		this.update({
+			type: "rating",
+			rating: this._rating
 		})
 	}
 

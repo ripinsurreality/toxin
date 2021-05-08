@@ -6,12 +6,13 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const TerserWebpackPlugin = require("terser-webpack-plugin")
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin")
 const CopyPlugin = require("copy-webpack-plugin")
-const webpack = require("webpack")
+const { ProvidePlugin } = require("webpack")
 
 const isDev = process.env.NODE_ENV === "development"
 const isProd = !isDev
 
-const fileName = ext => isDev ? `[name]/index.${ext}` : `[name]/index.[contenthash].${ext}`
+const fileName = (ext) =>
+	isDev ? `[name]/index.${ext}` : `[name]/index.[contenthash].${ext}`
 
 const PATHS = {
 	src: path.resolve(__dirname, "src"),
@@ -21,7 +22,9 @@ const PATHS = {
 
 const PAGES_DIR = `${PATHS.src}/pages/`
 const PAGES = fs.readdirSync(PAGES_DIR)
-const PAGES_TS = Object.fromEntries(new Map(PAGES.map(page => [page, `${PAGES_DIR}/${page}`])))
+const PAGES_TS = Object.fromEntries(
+	new Map(PAGES.map((page) => [page, `${PAGES_DIR}/${page}`]))
+)
 
 const optimization = () => {
 	const config = {
@@ -79,15 +82,18 @@ module.exports = {
 					to: `${PATHS.assets}/fonts`,
 					noErrorOnMissing: true,
 				},
-			]
+			],
 		}),
 		/* each pug page is turned into an html page */
-		...PAGES.map(page => new HTMLWebpackPlugin({
-			template: `${PAGES_DIR}/${page}/index.pug`,
-			filename: `${page}/index.html`,
-			chunks: [`${page}`]
-		})),
-		new webpack.ProvidePlugin({
+		...PAGES.map(
+			(page) =>
+				new HTMLWebpackPlugin({
+					template: `${PAGES_DIR}/${page}/index.pug`,
+					filename: `${page}/index.html`,
+					chunks: [`${page}`],
+				})
+		),
+		new ProvidePlugin({
 			$: "jquery",
 			jQuery: "jquery",
 		}),

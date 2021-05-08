@@ -5,15 +5,18 @@ export class Controller {
 	constructor(
 		private _model: Model,
 		private _view: View,
-		{ number, price, lux, reviews, images }: CardProps
+		{ number, price, lux, reviews, images, rating }: CardProps
 	) {
 		this._model.sub(this)
 		this._view.sub(this)
 
-		this._model.number = number
+		this._model.number = String(number)
 		this._model.priceNumber = price
 		this._model.lux = lux
 		this._model.reviews = reviews
+		if (rating) {
+			this._model.rating = rating
+		}
 		images.forEach((image) => {
 			this._model.addImage(image)
 		})
@@ -39,6 +42,10 @@ export class Controller {
 			}
 			case "reviews": {
 				this._view.reviews = options.reviews
+				return
+			}
+			case "rating": {
+				this._view.rating = options.rating
 				return
 			}
 

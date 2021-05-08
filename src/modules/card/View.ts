@@ -43,6 +43,10 @@ export class View {
 		this._label.reviews = reviews
 	}
 
+	set rating(rating: number | undefined) {
+		this._label.rating = rating
+	}
+
 	private observers: ViewObserver[] = []
 
 	sub(o: ViewObserver) {
@@ -215,7 +219,7 @@ class Label {
 	private $price: JQuery
 
 	private $bottom: JQuery
-	// private rating: Rating
+	private _rating: Rating
 	private $reviewsWrapper: JQuery
 	private $reviews: JQuery
 
@@ -231,6 +235,7 @@ class Label {
 		this.$price = $(`<div class="card__price"></div>`)
 
 		this.$bottom = $(`<div class="card__label-bottom"></div>`)
+		this._rating = new Rating()
 		this.$reviewsWrapper = $(
 			`<div class="card__reviews-wrapper"> отзывов</div>`
 		)
@@ -241,7 +246,7 @@ class Label {
 				this.$title.append(this.$number, this.$lux),
 				this.$priceWrapper.prepend(this.$price)
 			),
-			this.$bottom.append(this.$reviewsWrapper.prepend(this.$reviews))
+			this.$bottom.append(this._rating.render, this.$reviewsWrapper.prepend(this.$reviews))
 		)
 	}
 
@@ -255,6 +260,7 @@ class Label {
 
 	set number(number: string) {
 		this.$number.text(number)
+		this._rating.name = number
 	}
 
 	set price(price: string) {
@@ -263,6 +269,49 @@ class Label {
 
 	set reviews(reviews: number) {
 		this.$reviews.text(String(reviews))
+	}
+
+	set rating(rating: number | undefined) {
+		this._rating.rating = rating
+	}
+
+	get render() {
+		return this.$body
+	}
+}
+
+class Rating {
+	private $body: JQuery
+	private $inputs: JQuery
+	private _stars: JQuery[] = []
+
+	constructor() {
+		this.$body = $(`<div class="card__rate"></div>`)
+		this.$inputs = $(`<div class="rate"></div>`)
+		for (let i = 0; i < 5; i++) {
+			const star = $(
+				`<input type="radio" value="${
+					i + 1
+				}" class="rate__input"></input>`
+			)
+			this._stars[i] = star
+			this.$inputs.append(star)
+		}
+		this.$body.append(this.$inputs)
+	}
+
+	set name(name: string) {
+		this._stars.forEach(star => {
+			star.attr("name", name)
+		})
+	}
+
+	set rating(rating: number | undefined) {
+		if (typeof rating === "undefined") {
+			return
+		}
+		console.log(rating)
+		this._stars[rating - 1].prop("checked", true)
 	}
 
 	get render() {
