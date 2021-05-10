@@ -1,6 +1,7 @@
-mixin input-submit(label, placeholder)
+mixin input-submit(placeholder, label)
 	form.input-submit
 		label.input-submit__wrapper
-			h3.input-submit__label= label
+			if label
+				h3.input-submit__label= label
 			input(type="text" name="" placeholder=placeholder).input-submit__input
 			input(type="submit" value="arrow_forward").input-submit__submit

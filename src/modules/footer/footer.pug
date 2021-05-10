@@ -1,4 +1,5 @@
 include /pug/includes/logo
+include /modules/inputs/input-submit
 mixin footer
 	footer.footer
 		ul.footer__list.footer__list--wide
@@ -44,3 +45,5 @@ mixin footer
 				h3 Подписка
 			li
 				p Получайте специальные предложения и новости сервиса
+			li 
+				+input-submit("Email")
