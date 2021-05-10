@@ -310,7 +310,6 @@ class Rating {
 		if (typeof rating === "undefined") {
 			return
 		}
-		console.log(rating)
 		this._stars[rating - 1].prop("checked", true)
 	}
 

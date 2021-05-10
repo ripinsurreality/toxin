@@ -1,4 +1,4 @@
-// import "./index.sass"
+import "./index.sass"
 import "@modules/datepicker/datepicker"
 
 ;(function ($, window, document) {
