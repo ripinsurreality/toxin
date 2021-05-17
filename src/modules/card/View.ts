@@ -70,7 +70,7 @@ class Images {
 	private $body: JQuery
 	private $image: JQuery
 	private _arrows: Arrows
-	private _images: string[] = []
+	private _images: any[] = []
 	private _displayImageIndex: number = 0
 	private _balls: Balls
 
@@ -89,13 +89,21 @@ class Images {
 		if (this._images.length === 4) {
 			return
 		}
-		this._images.push(image)
-		this._balls.addBall()
-		this.displayImage = 0
-		if (this._images.length > 1) {
-			this._arrows.show()
-			this._balls.show()
-		}
+		import(
+			/* webpackMode: "lazy-once" */
+			`@img/${image}`
+		)
+			.then((img) => {
+				this._images.push(img.default)
+				console.log(this._images)
+				this._balls.addBall()
+				this.displayImage = 0
+				if (this._images.length > 1) {
+					this._arrows.show()
+					this._balls.show()
+				}
+			})
+			.catch((err) => console.error(err))
 	}
 
 	set displayImage(index: number) {
@@ -108,7 +116,7 @@ class Images {
 	private resetImage() {
 		this.$image.attr(
 			"src",
-			`../assets/img/${this._images[this._displayImageIndex]}`
+			`${this._images[this._displayImageIndex]}`
 		)
 	}
 
@@ -246,7 +254,10 @@ class Label {
 				this.$title.append(this.$number, this.$lux),
 				this.$priceWrapper.prepend(this.$price)
 			),
-			this.$bottom.append(this._rating.render, this.$reviewsWrapper.prepend(this.$reviews))
+			this.$bottom.append(
+				this._rating.render,
+				this.$reviewsWrapper.prepend(this.$reviews)
+			)
 		)
 	}
 
@@ -301,7 +312,7 @@ class Rating {
 	}
 
 	set name(name: string) {
-		this._stars.forEach(star => {
+		this._stars.forEach((star) => {
 			star.attr("name", name)
 		})
 	}
