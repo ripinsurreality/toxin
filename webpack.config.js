@@ -5,7 +5,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin")
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const TerserWebpackPlugin = require("terser-webpack-plugin")
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin")
-const CopyPlugin = require("copy-webpack-plugin")
+// const CopyPlugin = require("copy-webpack-plugin")
 const { ProvidePlugin } = require("webpack")
 
 const isDev = process.env.NODE_ENV === "development"
@@ -70,20 +70,20 @@ module.exports = {
 			filename: fileName(".css"),
 		}),
 		/* copies the stuff from a source folder into the dist without any change; otherwise, the names of the files are changed to hashes, and only the used are copied */
-		new CopyPlugin({
-			patterns: [
-				{
-					from: `${PATHS.src}/${PATHS.assets}/img`,
-					to: `${PATHS.assets}/img`,
-					noErrorOnMissing: true,
-				},
-				{
-					from: `${PATHS.src}/${PATHS.assets}/fonts`,
-					to: `${PATHS.assets}/fonts`,
-					noErrorOnMissing: true,
-				},
-			],
-		}),
+		// new CopyPlugin({
+		// 	patterns: [
+		// 		{
+		// 			from: `${PATHS.src}/${PATHS.assets}/img`,
+		// 			to: `${PATHS.assets}/img`,
+		// 			noErrorOnMissing: true,
+		// 		},
+		// 		{
+		// 			from: `${PATHS.src}/${PATHS.assets}/fonts`,
+		// 			to: `${PATHS.assets}/fonts`,
+		// 			noErrorOnMissing: true,
+		// 		},
+		// 	],
+		// }),
 		/* each pug page is turned into an html page */
 		...PAGES.map(
 			(page) =>
