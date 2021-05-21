@@ -5,22 +5,25 @@ mixin nav(authed, user)
 	nav.nav
 		a(href="/").nav__logo
 			+logo
+		.nav__burger 
+			.nav__burger-line
+			.nav__burger-line
+			.nav__burger-line
 		ul.nav__items
-			li.nav__item
-				a.nav__link(href="#") О нас
-			li.nav__item
-				a.nav__link(href="#") Услуги
-			li.nav__item
-				a.nav__link(href="#") Вакансии
-			li.nav__item
-				a.nav__link(href="#") Новости
-			li.nav__item
-				a.nav__link(href="#") Соглашения
+			- const links = [{title: "О нас", link: "#"}, {title: "Услуги", link: "#"}, {title: "Вакансии", link: "#"}, {title: "Новости", link: "#"}, {title: "Соглашения", link: "#"}]
+			each val, i in links
+				- const {title, link} = val
+				li.nav__item
+					a.nav__link(href= link)= title
 			if authed
-				li.nav__user
+				li.nav__item.nav__item--user
 					a.nav__link(href="#")= user
 			else
-				li.nav__item
-					+button("hollow", "Войти")
-				li.nav__item
-					+button("full", "Зарегистрироваться")
+				li.nav__item.nav__item--button
+					.nav__button
+						+button("hollow", "Войти")
+				li.nav__item.nav__item--button
+					.nav__button
+						+button("full", "Зарегистрироваться")
+	//- .nav-filler
+	.nav-modal
