@@ -2,48 +2,27 @@ include /pug/includes/logo
 include /modules/inputs/input-submit
 mixin footer
 	footer.footer
-		ul.footer__list.footer__list--wide
-			li.footer__li
-				a(href="#")
-					+logo
-			li.footer__li
-				p Бронирование номеров в лучшем отеле 2019 года по версии ассоциации «Отельные взгляды»
-		ul.footer__list
-			li
-				h3 Навигация
-			li
-				a(href="#") О нас
-			li
-				a(href="#") Новости
-			li
-				a(href="#") Служба поддержки
-			li
-				a(href="#") Услуги
-		ul.footer__list
-			li
-				h3 О нас
-			li
-				a(href="#") О сервисе
-			li
-				a(href="#") Наша команда
-			li
-				a(href="#") Вакансии
-			li
-				a(href="#") Инвесторы
-		ul.footer__list
-			li
-				h3 Служба поддержки
-			li
-				a(href="#") Сообщества
-			li
-				a(href="#") Соглашения
-			li
-				a(href="#") Связь с нами
-
-		ul.footer__list.footer__list--wide
-			li
-				h3 Подписка
-			li
-				p Получайте специальные предложения и новости сервиса
-			li 
-				+input-submit("Email")
+		.footer__section
+			ul.footer__list.footer__list--wide
+				li.footer__li
+					a(href="#")
+						+logo
+				li.footer__li
+					p Бронирование номеров в лучшем отеле 2019 года по версии ассоциации «Отельные взгляды»
+		- const lists = [{title: "Навигация", items: [{title: "О нас", link: "#"}, {title: "Новости", link: "#"}, {title: "Служба поддержки", link: "#"}, {title: "Услуги", link: "#"}]}, {title: "О нас", items: [{title: "О сервисе", link: "#"}, {title: "Наша команда", link: "#"}, {title: "Вакансии", link: "#"}, {title: "Инвесторы", link: "#"}]}, {title: "Служба поддержки", items: [{title: "Соглашения", link: "#"}, {title: "Сообщества", link: "#"}, {title: "Связь с нами", link: "#"}]}]
+		each list in lists
+			- const {title, items} = list
+			.footer__section
+				h3.footer__section-title= title
+				ul.footer__list
+					each item in items
+						- const {title, link} = item
+						li.footer__li
+							a(href=link)= title
+		.footer__section
+			h3.footer__section-title Подписка
+			ul.footer__list.footer__list--wide
+				li.footer__li
+					p Получайте специальные предложения и новости сервиса
+				li.footer__li
+					+input-submit("Email")
