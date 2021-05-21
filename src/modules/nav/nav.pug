@@ -10,11 +10,11 @@ mixin nav(authed, user)
 			.nav__burger-line
 			.nav__burger-line
 		ul.nav__items
-			- const links = [{title: "О нас", link: "#"}, {title: "Услуги", link: "#"}, {title: "Вакансии", link: "#"}, {title: "Новости", link: "#"}, {title: "Соглашения", link: "#"}]
+			- const links = [{title: "О нас", link: "#", active: true}, {title: "Услуги", link: "#"}, {title: "Вакансии", link: "#"}, {title: "Новости", link: "#"}, {title: "Соглашения", link: "#"}]
 			each val, i in links
-				- const {title, link} = val
+				- const {title, link, active} = val
 				li.nav__item
-					a.nav__link(href= link)= title
+					a.nav__link(href= link, class=active ? "nav__link--active" : "")= title
 			if authed
 				li.nav__item.nav__item--user
 					a.nav__link(href="#")= user
@@ -25,5 +25,4 @@ mixin nav(authed, user)
 				li.nav__item.nav__item--button
 					.nav__button
 						+button("full", "Зарегистрироваться")
-	//- .nav-filler
 	.nav-modal

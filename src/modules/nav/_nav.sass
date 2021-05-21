@@ -12,15 +12,10 @@
 	align-items: center
 	justify-content: space-between
 	width: 100%
-	padding: 0 10%
+	padding: 0 5%
 	height: 70px
 	background: #fff
 	box-shadow: $shadow
-
-	&-filler
-		width: 100%
-		height: 70px
-		visibility: hidden
 
 	&-modal
 		pointer-events: none
@@ -118,10 +113,31 @@
 
 		&--active
 			color: $darkgray
+			font-weight: 700
 
 	&__button
 		height: 34px
 
-	// &__user
-	// 	padding-left: 20px
-	// 	border-left: 1px solid $light
+
+@media screen and ( min-width: 768px )
+	.nav
+		padding: 0 10%
+
+@media screen and ( min-width: 1024px )
+	.nav
+
+		&__burger
+			display: none
+
+		&__items
+			position: static
+			flex-direction: row
+			width: fit-content
+			height: 100%
+			gap: 20px
+
+		&__item
+			&--user
+				border: none
+				border-left: 1px solid $light
+				padding-left: 20px
