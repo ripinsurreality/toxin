@@ -1,10 +1,9 @@
 @use "@/styles/helpers/helpers" as *
 @use "@modules/button/button" as *
 
-
 .nav
 	$shadow: 0px 10px 20px $light
-	position: sticky
+	position: fixed
 	top: 0
 	z-index: 101
 	display: flex
@@ -12,8 +11,9 @@
 	align-items: center
 	justify-content: space-between
 	width: 100%
-	padding: 0 5%
-	height: 70px
+	@extend %container-padding
+	$nav-height: 70px
+	height: $nav-height
 	background: #fff
 	box-shadow: $shadow
 
@@ -32,6 +32,9 @@
 		&--active
 			pointer-events: all
 			opacity: 0.5
+	
+	&-filler
+		height: $nav-height
 
 	&__burger
 		position: relative
@@ -45,6 +48,9 @@
 		$padding: 17px
 		padding: $padding
 		cursor: pointer
+
+		@media screen and ( min-width: 1024px )
+			display: none
 
 		&-line
 			position: absolute
@@ -94,17 +100,33 @@
 		align-items: center
 		transition: right 0.5s
 
+		@media screen and ( min-width: 1024px )
+			position: static
+			flex-direction: row
+			width: fit-content
+			height: 100%
+			gap: 20px
+
 		&--active
 			right: 0
 
 	&__item
 		width: 100%
 		flex: 1
+
+		@media screen and ( min-width: 1024px )
+			width: fit-content
+			flex: none
 		&--button
 			@extend %center
 
 		&--user
 			border-top: 1px solid $light
+
+			@media screen and ( min-width: 1024px )
+				border: none
+				border-left: 1px solid $light
+				padding-left: 20px
 
 	&__link
 		height: 100%
@@ -117,29 +139,3 @@
 
 	&__button
 		height: 34px
-
-
-@media screen and ( min-width: 768px )
-	.nav
-		padding: 0 10%
-
-@media screen and ( min-width: 1024px )
-	.nav
-
-		&__burger
-			display: none
-
-		&__items
-			position: static
-			flex-direction: row
-			width: fit-content
-			height: 100%
-			gap: 20px
-
-		&__item
-			width: fit-content
-			flex: none
-			&--user
-				border: none
-				border-left: 1px solid $light
-				padding-left: 20px
