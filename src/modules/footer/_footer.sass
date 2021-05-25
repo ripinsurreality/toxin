@@ -6,22 +6,26 @@
 	display: flex
 	flex-direction: row
 	justify-content: space-between
-	align-items: flex-start
-	width: 80%
-	margin: auto
-	padding: 100px 0
+	align-items: center
+	flex-wrap: wrap
+	width: 100%
+	padding-top: 100px
+	padding-bottom: 100px
+	@extend %container-padding
 	background: #fff
 
 	&__section
+		padding-bottom: 2rem
 		&-title
 			padding-bottom: 21px
 
 	&__list
+		width: 200px
 		display: flex
 		flex-direction: column
 		gap: 20px
 		color: $gray
 
 		&--wide
-			width: 260px
+			width: 300px
 			color: $darkgray
