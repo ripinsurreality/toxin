@@ -26,6 +26,23 @@ $secondary-gradient: linear-gradient(180deg, #6FCF97 0%, #66D2EA 100%)
 	-webkit-background-clip: text
 	-webkit-text-fill-color: transparent
 
+/** GENERAL PLACEHOLDERS **/
+
+%container-padding
+	$padding: 5%
+	padding-left: $padding
+	padding-right: $padding
+
+	@media screen and ( min-width: 1024px )
+		$padding: 10%
+		padding-left: $padding
+		padding-right: $padding
+		
+%center
+	display: flex
+	justify-content: center
+	align-items: center	
+
 /** INPUT PLACEHOLDERS **/
 %input-wrapper
 	width: 100%
