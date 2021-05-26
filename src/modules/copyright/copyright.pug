@@ -5,6 +5,12 @@ mixin copyright
 			+logo
 		.copyright__text Copyright &#169; 2018 Toxin отель. Все права зачищены.
 		.copyright__media
-			a(href="#").copyright__link 
-			a(href="#").copyright__link 
-			a(href="#").copyright__link 
+			a(href="#", title="Twitter link").copyright__link 
+				span(aria-hidden="true").copyright__icon 
+				span.copyright__link-text Twitter
+			a(href="#", title="Facebook link").copyright__link 
+				span(aria-hidden="true").copyright__icon 
+				span.copyright__link-text Facebook
+			a(href="#", title="Instagram link").copyright__link 
+				span(aria-hidden="true").copyright__icon 
+				span.copyright__link-text Instagram
