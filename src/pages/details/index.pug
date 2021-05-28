@@ -5,10 +5,9 @@ include /modules/room/room
 include /modules/bullet-list/bullet-list
 block content 
 	.showcase 
-		.showcase__main 
-		.showcase__aside 
-			.showcase__pic.showcase__pic--1
-			.showcase__pic.showcase__pic--2
+		img(src=require("@img/details1.png"), alt="").showcase__pic
+		img(src=require("@img/details2.png"), alt="").showcase__pic
+		img(src=require("@img/details3.png"), alt="").showcase__pic
 	.details 
 		.details__text
 			.details__text-top

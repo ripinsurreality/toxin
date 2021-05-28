@@ -1,5 +1,6 @@
 import "./index.sass"
 import "@modules/doughnut/doughnut"
+import "@modules/nav/nav"
 
 ;(function ($, window, document) {
 	$(function () {
