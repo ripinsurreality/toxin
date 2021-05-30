@@ -1,6 +1,7 @@
 import "./index.sass"
 import "@modules/dropdown/dropdown"
 import "@modules/datepicker/datepicker"
+import "@modules/nav/nav"
 
 ;(function ($, window, document) {
 	$(function () {
