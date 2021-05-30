@@ -2,7 +2,7 @@ include /pug/includes/logo
 include /modules/inputs/input-submit
 mixin footer
 	footer.footer
-		.footer__section
+		.footer__section.footer__section--wide
 			ul.footer__list.footer__list--wide
 				li.footer__li
 					a(href="#")
@@ -19,7 +19,7 @@ mixin footer
 						- const {title, link} = item
 						li.footer__li
 							a(href=link)= title
-		.footer__section
+		.footer__section.footer__section--wide
 			h3.footer__section-title Подписка
 			ul.footer__list.footer__list--wide
 				li.footer__li
