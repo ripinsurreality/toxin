@@ -9,19 +9,26 @@
 	margin: 70px auto
 	@extend %container-padding
 	display: flex
+	justify-content: center
 	gap: 70px
+	@media screen and ( max-width: 1280px )
+		flex-wrap: wrap
 
-	&__text
+	&__main
+		display: flex
+		flex-direction: column
+		gap: 70px
 
-		&-top,
-		&-bottom
-			display: flex
+	&__couple
+		display: flex
+		gap: 70px
+		justify-content: center
+
+		@media screen and ( min-width: 1024px  )
 			justify-content: space-between
-			gap: 70px
 
-		&-top,
-		&-middle
-			margin-bottom: 30px
+		@media screen and ( max-width: 768px )
+			flex-wrap: wrap
 
 	&__reviews
 		&-list
@@ -39,6 +46,10 @@
 	&__title-top
 		display: flex
 		justify-content: space-between
+
+	&__card
+		@media screen and ( max-width: 1280px )
+			order: -1
 
 .showcase
 	display: grid
