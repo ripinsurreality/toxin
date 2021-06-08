@@ -30,6 +30,9 @@
 		background: $dark
 		transition: opacity 0.2s
 
+		@media screen and ( min-width: 1024px )
+			display: none
+
 		&--active
 			pointer-events: all
 			opacity: 0.5
@@ -173,6 +176,7 @@
 
 	&__expand
 		@extend %material-icons
+		display: block
 		font-size: 2rem
 		line-height: 1
 		transform: rotate(90deg)

@@ -17,7 +17,7 @@ mixin nav(authed, user, activeLink)
 					li.nav__item.nav__item--list
 						.nav__link.nav__link--title= title
 						.nav__expand-wrap
-							.nav__expand expand_more
+							.nav__expand(hidden) expand_more
 						ul.nav__list
 							each item in list
 								- const {title, link} = item
