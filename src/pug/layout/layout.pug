@@ -1,3 +1,4 @@
+block variables
 doctype html
 html(lang="en")
 	head
@@ -9,7 +10,7 @@ html(lang="en")
 		include /modules/footer/footer
 		include /modules/copyright/copyright
 	body 
-		+nav 
+		+nav(authed, user, activeLink)
 		block content 
 		+footer 
 		+copyright
