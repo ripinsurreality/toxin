@@ -95,7 +95,6 @@ class Images {
 		)
 			.then((img) => {
 				this._images.push(img.default)
-				console.log(this._images)
 				this._balls.addBall()
 				this.displayImage = 0
 				if (this._images.length > 1) {
