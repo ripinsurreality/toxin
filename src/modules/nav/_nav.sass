@@ -33,7 +33,7 @@
 		&--active
 			pointer-events: all
 			opacity: 0.5
-	
+
 	&-filler
 		height: $nav-height
 
@@ -115,9 +115,14 @@
 		width: 100%
 		flex: 1
 
+		&--list
+			display: flex
+			cursor: pointer
+
 		@media screen and ( min-width: 1024px )
 			width: fit-content
 			flex: none
+			height: 100%
 		&--button
 			@extend %center
 
@@ -134,9 +139,53 @@
 		width: 100%
 		@extend %center
 
+		&--title
+			@media screen and ( max-width: 1024px )
+				transform: translateX(-1rem)
+
 		&--active
 			color: $darkgray
 			font-weight: 700
+
+	&__list
+		display: none
+		position: absolute
+		background: #fff
+		top: calc(100% - 1px)
+		padding: 1em
+		flex-direction: column
+		gap: 1.25em
+		padding: 1.25em
+		margin-left: -0.625rem
+		box-shadow: $shadow
+		clip-path: inset(0px -20px -20px -20px)
+
+		@media screen and ( max-width: 1024px )
+			right: 100%
+			top: 71px
+			bottom: 0
+			width: 40vw
+			box-shadow: none
+			
+
+		&--open
+			display: flex
+
+	&__expand
+		@extend %material-icons
+		font-size: 2rem
+		line-height: 1
+		transform: rotate(90deg)
+
+		@media screen and ( min-width: 1024px )
+			font-size: 1.5rem
+			transform: rotate(0deg)
+
+		&-wrap
+			@extend %center
+			order: -1
+			@media screen and ( min-width: 1024px )
+				order: 1
 
 	&__button
 		height: 34px

@@ -3,18 +3,30 @@ include /pug/includes/logo
 
 mixin nav(authed, user)
 	nav.nav
-		a(href="/").nav__logo
+		a(href="/index").nav__logo
 			+logo
 		.nav__burger 
 			.nav__burger-line
 			.nav__burger-line
 			.nav__burger-line
 		ul.nav__items
-			- const links = [{title: "О нас", link: "#", active: true}, {title: "Услуги", link: "#"}, {title: "Вакансии", link: "#"}, {title: "Новости", link: "#"}, {title: "Соглашения", link: "#"}]
-			each val, i in links
-				- const {title, link, active} = val
-				li.nav__item
-					a.nav__link(href= link, class=active ? "nav__link--active" : "")= title
+			- const links = [{title: "О нас", link: "#", active: true}, {title: "Услуги", list: [{title: "Услуга Первая", link: "#"}, {title: "Услуга Вторая", link: "#"}]}, {title: "Вакансии", link: "#"}, {title: "Новости", link: "#"}, {title: "Соглашения", list: [{title: "Соглашение Первое", link: "#"}, {title: "Соглашение Второе", link: "#"}, {title: "Соглашение Третье", link: "#"}, {title: "Соглашение Пятое", link: "#"}, {title: "Соглашение Десятое", link: "#"}]}]
+			each val in links
+				- const {title, link, active, list} = val
+				if list
+					li.nav__item.nav__item--list
+						.nav__link.nav__link--title= title
+						.nav__expand-wrap
+							.nav__expand expand_more
+						ul.nav__list
+							each item in list
+								- const {title, link} = item
+								li.nav__item 
+									a(href=link).nav__link=title
+
+				else
+					li.nav__item
+						a.nav__link(href= link, class=active ? "nav__link--active" : "")= title
 			if authed
 				li.nav__item.nav__item--user
 					a.nav__link(href="#")= user
