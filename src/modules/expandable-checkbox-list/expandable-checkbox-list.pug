@@ -6,5 +6,6 @@ mixin expandable-checkbox-list(title, ...items)
 		ul.checkbox-list__list
 			if items
 				each item in items
+					- const [value, checked] = item
 					li.checkbox-list__list-item
-						+checkbox(item)
+						+checkbox(value, checked)
