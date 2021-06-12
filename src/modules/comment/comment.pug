@@ -2,8 +2,7 @@ include /modules/like/like.pug
 mixin comment(src, name, date, likes, text)
 	.comment
 		.comment__top
-			//img(src=src alt="avatar")
-			.comment__img
+			img(src=src alt="avatar").comment__img
 			.comment__head
 				.comment__name= name 
 				.comment__date= date 
