@@ -131,11 +131,24 @@
 
 		&--user
 			border-top: 1px solid $light
+			position: relative
+			&::before
+				content: ""
+				display: none
+				position: absolute
+				top: 20px
+				bottom: 20px
+				left: -1px
+				width: 1px
+				background: fade-in($light, 0.05)
+					
 
 			@media screen and ( min-width: 1024px )
 				border: none
-				border-left: 1px solid $light
 				padding-left: 20px
+
+				&::before
+					display: block
 
 	&__link
 		height: 100%
