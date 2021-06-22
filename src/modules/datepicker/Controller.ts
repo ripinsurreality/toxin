@@ -7,7 +7,8 @@ export class Controller {
 		private model: Model,
 		private view: View,
 		date?: Dayjs,
-		multi?: boolean
+		multi?: boolean,
+		multiSplit?: boolean
 	) {
 		this.model.sub(this)
 		this.view.sub(this)

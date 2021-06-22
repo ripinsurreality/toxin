@@ -1,6 +1,7 @@
 interface DatepickerProps {
 	date?: Dayjs
 	multi?: boolean
+	multiSplit?: boolean
 }
 
 interface JQuery {
