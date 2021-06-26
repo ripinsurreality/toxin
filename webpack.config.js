@@ -10,7 +10,7 @@ const isDev = process.env.NODE_ENV === "development"
 const isProd = !isDev
 
 const fileName = (ext) =>
-  isDev ? `index.${ext}` : `index.[contenthash].${ext}`
+  isDev ? `[name]/index.${ext}` : `[name]/index.[contenthash].${ext}`
 
 const PATHS = {
   src: path.resolve(__dirname, "src"),
@@ -74,7 +74,7 @@ module.exports = {
       (page) =>
         new HTMLWebpackPlugin({
           template: `${PAGES_DIR}/${page}/index.pug`,
-          filename: `${page}/index.html`,
+          filename: page === "index" ? `index.html` : `${page}/index.html`,
           chunks: [`${page}`],
         })
     ),
