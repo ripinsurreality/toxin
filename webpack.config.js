@@ -5,12 +5,13 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const TerserWebpackPlugin = require("terser-webpack-plugin")
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin")
 const { ProvidePlugin } = require("webpack")
+const CopyPlugin = require("copy-webpack-plugin")
 
 const isDev = process.env.NODE_ENV === "development"
 const isProd = !isDev
 
 const fileName = (ext) =>
-  isDev ? `[name]/index.${ext}` : `[name]/index.[contenthash].${ext}`
+  isDev ? `[name].${ext}` : `[name].[contenthash].${ext}`
 
 const PATHS = {
   src: path.resolve(__dirname, "src"),
@@ -19,14 +20,22 @@ const PATHS = {
 }
 
 const PAGES_DIR = `${PATHS.src}/pages/`
-const PAGES = fs.readdirSync(PAGES_DIR)
+const PAGES = ["search"] /* fs.readdirSync(PAGES_DIR) */
 const PAGES_TS = Object.fromEntries(
-  new Map(PAGES.map((page) => [page, `${PAGES_DIR}/${page}`]))
+  new Map(
+    PAGES.map((page) => {
+      return [
+        page,
+        {
+          import: `${PAGES_DIR}/${page}`,
+        },
+      ]
+    })
+  )
 )
 
 const optimization = () => {
   const config = {
-    /* helps pull out the same code out of multiple files so that they're loaded once */
     splitChunks: {
       chunks: "all",
     },
@@ -62,37 +71,42 @@ module.exports = {
   output: {
     filename: fileName("js"),
     path: PATHS.dist,
-    publicPath: "/",
+    publicPath: `/`,
     clean: true,
-    assetModuleFilename: "assets/[name][ext]",
   },
   plugins: [
-    new MiniCssExtractPlugin({
-      filename: fileName(".css"),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: `${PATHS.src}/${PATHS.assets}/img`,
+          to: `${PATHS.assets}/img`,
+          noErrorOnMissing: true,
+        },
+        {
+          from: `${PATHS.src}/${PATHS.assets}/fonts`,
+          to: `${PATHS.assets}/fonts`,
+          noErrorOnMissing: true,
+        },
+      ],
     }),
-    ...PAGES.map(
-      (page) =>
-        new HTMLWebpackPlugin({
-          template: `${PAGES_DIR}/${page}/index.pug`,
-          filename: page === "index" ? `index.html` : `${page}/index.html`,
-          chunks: [`${page}`],
-        })
-    ),
+    new MiniCssExtractPlugin({
+      filename: fileName("css"),
+    }),
+    ...PAGES.map((page) => {
+      return new HTMLWebpackPlugin({
+        template: `${PAGES_DIR}/${page}/index.pug`,
+        filename: `index.html`,
+        chunks: [`${page}`],
+      })
+    }),
     new ProvidePlugin({
       $: "jquery",
       jQuery: "jquery",
     }),
   ],
   resolve: {
-    extensions: [
-      ".js",
-      ".ts",
-      ".json",
-      ".png",
-      ".jpg",
-    ] /* helps get rid of explicit extensions */,
+    extensions: [".js", ".ts", ".json", ".png", ".jpg"],
     alias: {
-      /* creates an alias for a folder address */
       "@modules": `${PATHS.src}/modules`,
       "@fonts": `${PATHS.src}/${PATHS.assets}/fonts`,
       "@img": `${PATHS.src}/${PATHS.assets}/img`,
@@ -103,7 +117,7 @@ module.exports = {
   devServer: {
     contentBase: PATHS.dist,
     port: 4321,
-    // open: true
+    compress: true,
   },
   module: {
     rules: [
@@ -111,23 +125,23 @@ module.exports = {
         test: /\.(sa|sc|c)ss$/,
         use: [
           isDev ? "style-loader" : MiniCssExtractPlugin.loader,
-          "css-loader",
+          { loader: "css-loader", options: { url: false } },
           "postcss-loader",
           "sass-loader",
         ],
       },
       {
-        test: /\.(png|jpeg|jpg|svg|gif)$/,
+        test: /\.(png|jpeg|jpg|gif)$/,
         type: "asset/resource",
         generator: {
-          filename: "assets/img/[name][ext]",
+          filename: "[name][ext]",
         },
       },
       {
-        test: /\.(ttf|woff|woff2|eot)$/,
+        test: /\.(ttf|woff|woff2|svg|eot)$/,
         type: "asset/resource",
         generator: {
-          filename: "assets/fonts/[name][ext]",
+          filename: "[name][ext]",
         },
       },
       {
