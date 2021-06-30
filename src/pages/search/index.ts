@@ -2,6 +2,7 @@ import "./index.sass"
 import "@modules/dropdown/dropdown"
 import "@modules/datepicker/datepicker"
 import "@modules/card/card"
+import "@modules/nav/nav"
 ;(function ($, window, document) {
 	$(function () {
 		$(".search__comfort").dropdown("comfort")
